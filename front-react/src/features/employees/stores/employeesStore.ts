@@ -1,22 +1,22 @@
-import { create } from 'zustand';
-import { Employee } from '@/types/employee';
+import { create } from "zustand";
+import { Employee } from "@/types/employee";
 
 interface EmployeesState {
-    selectedEmployee: Employee | null;
-    setSelectedEmployee: (employee: Employee | null) => void;
-    filterText: string;
-    setFilterText: (text: string) => void;
-    departmentFilter: string | null;
-    setDepartmentFilter: (department: string | null) => void;
+  selectedEmployee: Employee | null;
+  setSelectedEmployee: (employee: Employee | null) => void;
+  filterText: string;
+  setFilterText: (text: string) => void;
+  departmentFilter: string | null;
+  setDepartmentFilter: (department: string | null) => void;
 }
 
 export const useEmployeesStore = create<EmployeesState>((set) => ({
-    selectedEmployee: null,
-    setSelectedEmployee: (employee) => set({ selectedEmployee: employee }),
+  selectedEmployee: null,
+  setSelectedEmployee: (employee) => set({ selectedEmployee: employee }),
 
-    filterText: '',
-    setFilterText: (text) => set({ filterText: text }),
+  filterText: "",
+  setFilterText: (text) => set({ filterText: text }),
 
-    departmentFilter: null,
-    setDepartmentFilter: (department) => set({ departmentFilter: department })
+  departmentFilter: null,
+  setDepartmentFilter: (department) => set({ departmentFilter: department }),
 }));

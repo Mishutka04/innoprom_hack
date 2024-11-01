@@ -1,16 +1,16 @@
-import { EmployeesPage } from '@/features/employees/pages/EmployeesPage';
+import { EmployeesPage } from "@/features/employees/pages/EmployeesPage";
 
 export interface RouteConfig {
   path: string;
   element: React.ComponentType;
-  requiredRole?: 'employee' | 'manager' | 'hr';
+  requiredRole?: "employee" | "manager" | "hr";
 }
 
 export const routes: RouteConfig[] = [
   {
-    path: '/employees',
+    path: "/employees",
     element: EmployeesPage,
-    requiredRole: 'employee' // Minimum required role
+    requiredRole: "employee", // Minimum required role
   },
   // Other routes will be added later:
   // {

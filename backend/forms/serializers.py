@@ -5,7 +5,7 @@ from .models import UserProfile, Methodology, StatusMethodology, FormAnswer, Res
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
-        fields = ['id', 'user', 'photo', 'full_name', 'birth_date', 'department', 'position', 'start_date']
+        fields = ['id', 'photo', 'full_name', 'birth_date', 'department', 'position', 'start_date']
 
 
 class MethodologySerializer(serializers.ModelSerializer):

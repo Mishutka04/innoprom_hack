@@ -2,7 +2,6 @@ from django.db import models
 
 
 class UserProfile(models.Model):
-    # user = models.OneToOneField(User, on_delete=models.CASCADE)  # Связь с встроенной моделью User
     photo = models.ImageField(upload_to='photos/', blank=True, null=True)  # Поле для фото
     full_name = models.CharField(max_length=255)  # ФИО
     birth_date = models.DateField(null=True, blank=True)  # Дата рождения

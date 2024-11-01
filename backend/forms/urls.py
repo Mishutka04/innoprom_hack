@@ -5,5 +5,8 @@ app_name = 'forms'
 
 
 urlpatterns = [
-     path('form/<int:pk>/', views.QuotationSessionAPIView.as_view(), name='get_session'),
+     path('users/', views.UserProfileListCreateView.as_view(), name='get_session'),
+     path('user/card/<int:pk>/', views.CombinedUserProfileMethodologyView.as_view(), name='get_session'),
+     
+     
 ]

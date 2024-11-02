@@ -11,11 +11,17 @@ import {
   useAppearance,
   View,
 } from "@vkontakte/vkui";
+import { useAuthStore } from "@/auth/stores/authStore.ts";
 
 const queryClient = new QueryClient();
 
 export const AppConfig = () => {
   const appearance = useAppearance() || undefined;
+
+  useAuthStore((state) => {
+    state.login("xxx", "xxx");
+    return state.user;
+  });
 
   return (
     <ConfigProvider appearance={appearance} hasCustomPanelHeaderAfter={true}>

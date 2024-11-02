@@ -4,6 +4,7 @@ import { employeesApi } from "../api/employeesApi";
 import { useAuthStore } from "@/auth/stores/authStore";
 import { useLocation } from "react-router-dom";
 import {
+  Spinner,
   SplitCol,
   SplitLayout,
   useAdaptivityConditionalRender,
@@ -13,11 +14,8 @@ import { EmployeeCard } from "@/features/employees/components/EmployeeCard.tsx";
 
 const EmployeesPage = () => {
   const { viewWidth } = useAdaptivityConditionalRender();
-  const user = useAuthStore((state) => {
-    state.login("xxx", "xxx");
-    return state.user;
-  });
-  const { data: employeesOrNull, isLoading } = useQuery({
+  const user = useAuthStore((state) => state.user);
+  const { data: employeesOrNull, isFetchedAfterMount } = useQuery({
     queryKey: ["employees", user?.id],
     queryFn: () => employeesApi.getAccessibleEmployees(user?.id || ""),
     enabled: !!user,
@@ -28,8 +26,8 @@ const EmployeesPage = () => {
     (e) => e.id === employeeId,
   );
 
-  if (isLoading) {
-    return <div>Loading...</div>;
+  if (!isFetchedAfterMount) {
+    return <Spinner />;
   }
 
   return (

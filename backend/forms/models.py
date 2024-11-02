@@ -8,7 +8,8 @@ class UserProfile(models.Model):
     department = models.CharField(max_length=255)  # Департамент
     position = models.CharField(max_length=255)  # Должность
     start_date = models.DateField(null=True, blank=True)  # Дата начала работы
-
+    male = models.CharField(max_length=255)  # Пол
+    # raiting = models.FloatField()
     def __str__(self):
         return self.full_name
 
@@ -42,9 +43,19 @@ class FormAnswer(models.Model):
 class ResultMethodology(models.Model):
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)  # Связь с профилем пользователя
     methodology = models.ForeignKey(Methodology, on_delete=models.CASCADE)  # Связь с методологией
-    result = models.JSONField()  # Обработанные данные в формате JSON
-    description = models.TextField()  # Краткое описание для пользователя
+    matrix_competence = models.JSONField() # Матрица компетенций    
     created_at = models.DateTimeField(auto_now_add=True)  # Дата создания записи
 
     def __str__(self):
         return f"Result for {self.user.full_name} - {self.methodology.name}"
+    
+
+class UserCard(models.Model):
+    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)  # Связь с профилем пользователя
+    skills = models.JSONField()  # Обработанные данные в формате JSON
+    description = models.TextField()  # Краткое описание для пользователя
+    
+    created_at = models.DateTimeField(auto_now_add=True)  # Дата создания записи
+
+    def __str__(self):
+        return f"Result for {self.user.full_name}"

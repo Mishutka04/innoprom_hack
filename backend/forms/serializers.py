@@ -1,32 +1,37 @@
 
 from rest_framework import serializers
-from .models import UserProfile, Methodology, StatusMethodology, FormAnswer, ResultMethodology
+from .models import UserProfile, Methodology, StatusMethodology, FormAnswer, ResultMethodology, UserCard
 
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
-        fields = ['id', 'photo', 'full_name', 'birth_date', 'department', 'position', 'start_date']
-
+        fields = "__all__"
 
 class MethodologySerializer(serializers.ModelSerializer):
     class Meta:
         model = Methodology
-        fields = ['id', 'name', 'criteria']
+        fields = "__all__"
 
 
 class StatusMethodologySerializer(serializers.ModelSerializer):
     class Meta:
         model = StatusMethodology
-        fields = ['id', 'user', 'methodology', 'status']
+        fields = "__all__"
 
 
 class FormAnswerSerializer(serializers.ModelSerializer):
     class Meta:
         model = FormAnswer
-        fields = ['id', 'user', 'methodology', 'answers']
+        fields = "__all__"
 
 
 class ResultMethodologySerializer(serializers.ModelSerializer):
     class Meta:
         model = ResultMethodology
-        fields = ['id', 'user', 'methodology', 'result', 'description', 'created_at']
+        fields = "__all__"
+        
+        
+class UserCardSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserCard
+        fields = "__all__"

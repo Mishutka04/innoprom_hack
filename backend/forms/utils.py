@@ -14,14 +14,40 @@ def prepare_prompt(reviews, criteria):
     return prompt
 
 def evaluate_reviews_with_llm(prompt):
-    url = "https://vk-devinsight-case.olymp.innopolis.university/generate"
+    
+    urls = [
+    'https://vk-devinsight-case.olymp.innopolis.university',
+    'https://vk-scoreworker-case.olymp.innopolis.university',
+    'https://mts-aidocprocessing-case.olymp.innopolis.university'
+]   
+    
+    url = urls[0] + "/generate"
+    
     data = {
         "prompt": [prompt],
         "apply_chat_template": True,
-        "system_prompt": "You are a helpful assistant. Ответ дай на русском языке. И сделай ответ в виде json с ключами criteria, star, comment. Мне нужен чистый json без твоих комментариев",
-        "max_tokens": 1200,
+        "system_prompt": "You are a helpful assistant. Ответ на русском. По каждому критерию запиши в properties данные. Criteria - название критерия, comment - комментарий, star - Оценка от 1 - до 5.",
+        "max_tokens": 400,
         "n": 1,
-        "temperature": 0.7
+        "temperature": 0.7,
+        "schema": json.dumps({
+            "title": "User",
+            "type": "object",
+            "properties": {
+                "criteries": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "criteria": {"type": "string"},
+                            "comment": {"type": "string"},
+                            "star": {"type": "integer"}
+                        },
+                        "required": ["criteria", "comment", "star"]
+                    }
+                }
+            }
+        })
     }
 
     headers = {
@@ -34,23 +60,4 @@ def evaluate_reviews_with_llm(prompt):
         return response.json()
     else:
         return f"Error: {response.status_code} - {response.text}"
-    
 # Function to parse evaluations and save to a new JSON file
-def save_evaluations(input_data):
-    evaluations = []
-    
-    # Extracting evaluations from input data
-    evaluation_strings = input_data
-    
-    for evaluation_string in evaluation_strings:
-        try:
-            evaluations.append({
-                "criteria": evaluation_string['criteria'],
-                "star": evaluation_string["star"],
-                "comment": evaluation_string["comment"]
-            })
-        except json.JSONDecodeError as e:
-            print("Error parsing evaluation:", e)
-
-    return evaluations
-

@@ -3,7 +3,7 @@ import json
 from django.http import JsonResponse
 from rest_framework import generics
 from rest_framework.views import APIView
-from .utils import evaluate_reviews_with_llm, prepare_prompt, save_evaluations
+from .utils import evaluate_reviews_with_llm, prepare_prompt
 from .models import UserProfile, Methodology, StatusMethodology, FormAnswer, ResultMethodology, UserCard
 from .serializers import UserProfileSerializer, MethodologySerializer, StatusMethodologySerializer, FormAnswerSerializer, ResultMethodologySerializer, UserCardSerializer
 from rest_framework.response import Response
@@ -30,7 +30,7 @@ class CombinedUserProfileMethodologyView(generics.GenericAPIView):
             "methodologies": methodology_serializer.data,
             "user_card": user_card_serializer.data,
         }
-
+        print(response_data)
         return Response(response_data)
 
 
@@ -73,11 +73,17 @@ class EvaluateReviewsView(APIView):
         for user_id in user_groups.keys():
             reviews = []
             metodic = []
+            metod = None
+            user = None
             for query in user_groups[user_id]:
                 print("TEST", query.methodology)
                 # Extract methodology and answers
                 methodology = query.methodology
                 answers = query.answers['answer']
+                if not metod or user:
+                    metod = query.methodology
+                    user = query.user
+                    
                 if not metodic:
                     
                     metodic = [item['criteria'] for item in query.methodology.criteria ]
@@ -88,18 +94,17 @@ class EvaluateReviewsView(APIView):
             prompt = prepare_prompt(reviews, metodic)
             
             # Evaluate the reviews with LLM
-            evaluation_result = evaluate_reviews_with_llm(prompt).replace("\n", "").replace("  ", "")
+            evaluation_result = evaluate_reviews_with_llm(prompt)
             # # evaluation_result_json = json.dumps(evaluation_result, ensure_ascii=False, indent=4)
-            result_of_evaluation_dict = json.loads(evaluation_result)
-            print(type(result_of_evaluation_dict), result_of_evaluation_dict)
-            r = save_evaluations(result_of_evaluation_dict)
-            res = json.dumps(r, ensure_ascii=False, indent=4)
+        
+            result_methodology = ResultMethodology(
+                user=user,
+                methodology=methodology,
+                matrix_competence=evaluation_result  # Используйте matrix_competence если это JSONField
+            )
+
+            # Сохраняем объект в базе данных
+            result_methodology.save()
             
             # Save results (you may need to adjust this part based on your model)
-            results.append({
-                'user': form_answer.user.full_name,
-                'methodology': methodology.name,
-                'evaluation': res
-            })
-        print(results)
-        return JsonResponse({'results': results}, status=200)
+        return JsonResponse({'results': "Okey"}, status=200)

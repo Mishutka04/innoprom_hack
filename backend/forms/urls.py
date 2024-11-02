@@ -10,4 +10,6 @@ urlpatterns = [
      path('generate/metric/', views.EvaluateReviewsView.as_view(), name='get_session'),
      
      
+     
+     
 ]

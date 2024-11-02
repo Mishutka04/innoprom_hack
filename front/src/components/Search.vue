@@ -166,7 +166,8 @@
                             </div>
                         </div>
                         <template v-else>
-                            <CompetencyRadarChart :skills="skillsArray"/>
+                 
+                            <CompetencyRadarChart :skills="skills" />
                         </template>
                     </template>
                     <template v-else>
@@ -194,12 +195,40 @@ const selectedGender = ref('Любой')
 const activeTab = ref('text')
 const selectedEmployee = ref(null)
 const skillsArray = ref([
-  { skill: 'JavaScript', star: 4 },
-  { skill: 'Vue.js', star: 5 },
-  { skill: 'CSS', star: 3 },
-  { skill: 'HTML', star: 4 },
-  { skill: 'Node.js', star: 2 }
+    { skill: 'JavaScript', star: 4 },
+    { skill: 'Vue.js', star: 5 },
+    { skill: 'CSS', star: 3 },
+    { skill: 'HTML', star: 4 },
+    { skill: 'Node.js', star: 2 }
 ]);
+const methodologies = ref()
+const skills = ref([])
+async function fetchSkills() {
+    try {
+        // Извлечение критериев и оценок для всех методологий
+        const skillsArray = [];
+
+        methodologies.value.forEach(methodology => {
+            const skillData = JSON.parse(methodology.matrix_competence).criteries;
+
+            // Форматируем данные в нужный массив
+            skillData.forEach(criterion => {
+                skillsArray.push({
+                    skill: criterion.criteria,
+                    star: criterion.star
+                });
+            });
+        });
+
+        return skillsArray;
+    } catch (error) {
+        console.error('Ошибка при получении данных:', error);
+        return [];
+    }
+}
+
+// Пример использования функции
+
 const genders = ['Любой', 'Мужской', 'Женский']
 
 
@@ -228,7 +257,7 @@ const fetchEmployees = async () => {
 const fetchEmployeesCard = async (id) => {
     try {
         const response = await axios.get('http://127.0.0.1:8000/api/user/card/' + id + "/");
-        console.log(response.data.user_profile);
+        console.log(response.data);
 
         // Преобразуем данные для соответствия структуре employees
         const user = response.data.user_profile; // Извлекаем объект user_profile
@@ -243,11 +272,16 @@ const fetchEmployeesCard = async (id) => {
             reviewers: Array(8).fill('../assets/user.png'), // Замените на реальные аватары, если доступны
             user_card: response.data.user_card[0]
         };
+        methodologies.value = response.data.methodologies
 
-        console.log("Test", selectedEmployee.value);
     } catch (error) {
         console.error('Ошибка при получении сотрудников:', error);
     }
+    fetchSkills().then(fetchedSkills => {
+        skills.value = fetchedSkills;
+    });
+
+    console.log("Test", skills.value);
 };
 
 const employees = ref([

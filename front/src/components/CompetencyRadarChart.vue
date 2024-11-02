@@ -20,7 +20,7 @@ let chart = null;
 
 const createChart = () => {
   const ctx = chartRef.value.getContext('2d');
-  
+  console.log("CSA", props.skills)
   const labels = props.skills.map(skill => skill.skill);
   const data = props.skills.map(skill => skill.star);
 

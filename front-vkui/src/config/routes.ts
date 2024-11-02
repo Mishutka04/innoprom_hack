@@ -11,7 +11,7 @@ export const ROOT = "root";
 export const EMPLOYEES_VIEW = {
   VIEW_ID: "employees_view",
   PANELS: {
-    PLACEHOLDER: "placeholder_panel",
+    PLACEHOLDER: "placeholder",
     EMPLOYEE_CARD: "employee_card",
   },
 } as const;
@@ -27,7 +27,11 @@ export const routes = RoutesConfig.create([
   createRoot(ROOT, [
     createView(EMPLOYEES_VIEW.VIEW_ID, [
       createPanel(EMPLOYEES_VIEW.PANELS.PLACEHOLDER, "/", []),
-      createPanel(EMPLOYEES_VIEW.PANELS.EMPLOYEE_CARD, "/employee_card", []),
+      createPanel(
+        EMPLOYEES_VIEW.PANELS.EMPLOYEE_CARD,
+        "/employee_card/:id",
+        [],
+      ),
     ]),
     createView(PERSIK_VIEW.VIEW_ID, [
       createPanel(PERSIK_VIEW.PANELS.MAIN, "/persik", []),

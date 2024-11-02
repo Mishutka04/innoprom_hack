@@ -18,7 +18,7 @@ export const App = () => {
   const isVKCOM = false;
 
   return (
-    <SplitLayout center header={!isVKCOM && <PanelHeader delimiter="none" />}>
+    <SplitLayout center>
       {viewWidth.tabletPlus && (
         <SplitCol
           className={viewWidth.tabletPlus.className}

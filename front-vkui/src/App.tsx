@@ -1,5 +1,5 @@
-import * as React from 'react';
-import { createRoot } from 'react-dom/client';
+import * as React from "react";
+import { createRoot } from "react-dom/client";
 import {
   AdaptivityProvider,
   ConfigProvider,
@@ -12,11 +12,10 @@ import {
   Header,
   Group,
   SimpleCell,
-} from '@vkontakte/vkui';
-import '@vkontakte/vkui/dist/vkui.css';
+} from "@vkontakte/vkui";
+import "@vkontakte/vkui/dist/vkui.css";
 
 const App = () => {
-
   return (
     <AppRoot>
       <SplitLayout header={<PanelHeader delimiter="none" />}>

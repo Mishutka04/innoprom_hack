@@ -1,5 +1,5 @@
 import {
-  createHashRouter,
+  createBrowserRouter,
   createPanel,
   createRoot,
   createView,
@@ -24,4 +24,4 @@ export const routes = RoutesConfig.create([
   ]),
 ]);
 
-export const router = createHashRouter(routes.getRoutes());
+export const router = createBrowserRouter(routes.getRoutes());

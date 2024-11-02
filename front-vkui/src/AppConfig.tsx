@@ -4,11 +4,9 @@ import {
   ConfigProvider,
   useAppearance,
 } from "@vkontakte/vkui";
-import { RouterProvider } from "@vkontakte/vk-mini-apps-router";
 import "@vkontakte/vkui/dist/vkui.css";
 
 import { App } from "./App";
-import { router } from "./config/routes.ts";
 
 export const AppConfig = () => {
   const appearance = useAppearance() || undefined;
@@ -18,9 +16,8 @@ export const AppConfig = () => {
     <ConfigProvider appearance={appearance} hasCustomPanelHeaderAfter={true}>
       <AdaptivityProvider>
         <AppRoot mode="full">
-          <RouterProvider router={router}>
-            <App />
-          </RouterProvider>
+          {/*Add routes*/}
+          <App />
         </AppRoot>
       </AdaptivityProvider>
     </ConfigProvider>

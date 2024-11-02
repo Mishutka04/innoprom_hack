@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 // import { Navigate, useLocation } from "react-router-dom";
 import { useAuthStore } from "../stores/authStore";
-import { useLocation } from "@vkontakte/vk-mini-apps-router/dist/hooks/hooks";
+import { useLocation } from "react-router-dom";
 
 interface AuthGuardProps {
   children: ReactNode;

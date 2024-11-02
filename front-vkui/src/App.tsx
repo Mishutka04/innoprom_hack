@@ -1,29 +1,20 @@
 import {
   Avatar,
+  Button,
   Card,
   Cell,
   Group,
-  Panel,
   PanelHeader,
   Placeholder,
   SplitCol,
   SplitLayout,
   useAdaptivityConditionalRender,
-  View,
 } from "@vkontakte/vkui";
-import {
-  useActiveVkuiLocation,
-  useRouteNavigator,
-} from "@vkontakte/vk-mini-apps-router";
-
-import { EMPLOYEES_VIEW } from "./config/routes.ts";
+import { useState } from "react";
 
 export const App = () => {
-  const { panel: activePanel = EMPLOYEES_VIEW.PANELS.EMPLOYEE_CARD } =
-    useActiveVkuiLocation();
-  const routeNavigator = useRouteNavigator();
-
   const { viewWidth } = useAdaptivityConditionalRender();
+  const [showPlaceholder, setShowPlaceholder] = useState(true);
   const isVKCOM = false;
 
   return (
@@ -37,7 +28,12 @@ export const App = () => {
         >
           {!isVKCOM && <PanelHeader />}
           <Group>
-            <Card>See placeholders on the right side.</Card>
+            <Card>
+              See placeholders on the right side
+              <Button onClick={() => setShowPlaceholder(!showPlaceholder)}>
+                Toggle
+              </Button>
+            </Card>
           </Group>
           <Group>
             <Card>
@@ -46,9 +42,7 @@ export const App = () => {
                   key={name}
                   before={<Avatar size={48} />}
                   onClick={() => {
-                    routeNavigator.push(
-                      `/${EMPLOYEES_VIEW.PANELS.EMPLOYEE_CARD}/${name}`,
-                    );
+                    console.log("clicked on", name);
                   }}
                 >
                   {name}
@@ -60,23 +54,18 @@ export const App = () => {
       )}
 
       <SplitCol width="100%" maxWidth="560px" stretchedOnMobile autoSpaced>
-        <View activePanel={activePanel}>
-          <Panel id={EMPLOYEES_VIEW.PANELS.PLACEHOLDER}>
-            <PanelHeader after={<Avatar size={36} />}>Panel 2</PanelHeader>
-            <Group>
-              <Placeholder>nothing here</Placeholder>
-            </Group>
-          </Panel>
-
-          <Panel id={EMPLOYEES_VIEW.PANELS.EMPLOYEE_CARD}>
-            <PanelHeader>Panel 3</PanelHeader>
-            <Group>
-              Hello John! <Avatar size={36} />
-              <br />
-              This is your user card 😉
-            </Group>
-          </Panel>
-        </View>
+        {showPlaceholder && (
+          <Group>
+            <Placeholder>nothing here</Placeholder>
+          </Group>
+        )}
+        {!showPlaceholder && (
+          <Group>
+            Hello John! <Avatar size={36} />
+            <br />
+            This is your user card 😉
+          </Group>
+        )}
       </SplitCol>
     </SplitLayout>
   );

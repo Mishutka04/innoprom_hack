@@ -1,3 +1,7 @@
+import "@vkontakte/vkui/dist/vkui.css";
+import EmployeesPage from "@/features/employees/pages/EmployeesPage.tsx";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   AdaptivityProvider,
   AppRoot,
@@ -7,23 +11,26 @@ import {
   useAppearance,
   View,
 } from "@vkontakte/vkui";
-import "@vkontakte/vkui/dist/vkui.css";
 
-import { App } from "./App";
+const queryClient = new QueryClient();
 
 export const AppConfig = () => {
   const appearance = useAppearance() || undefined;
-  // const { viewWidth } = useAdaptivityConditionalRender();
 
   return (
     <ConfigProvider appearance={appearance} hasCustomPanelHeaderAfter={true}>
       <AdaptivityProvider>
         <AppRoot mode="full">
-          {/*Add routes*/}
           <View activePanel="main_panel">
             <Panel id="main_panel">
               <PanelHeader>Title here</PanelHeader>
-              <App />
+              <QueryClientProvider client={queryClient}>
+                <BrowserRouter>
+                  <Routes>
+                    <Route path={"/"} element={<EmployeesPage />} />
+                  </Routes>
+                </BrowserRouter>
+              </QueryClientProvider>
             </Panel>
           </View>
         </AppRoot>

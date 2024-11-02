@@ -9,6 +9,7 @@ import {
   PanelHeader,
 } from "@vkontakte/vkui";
 import { useRouteNavigator } from "@vkontakte/vk-mini-apps-router";
+import { EMPLOYEES_VIEW } from "@/config/routes.ts";
 
 export const Home: FC<NavIdProps> = ({ id }) => {
   const routeNavigator = useRouteNavigator();
@@ -23,7 +24,9 @@ export const Home: FC<NavIdProps> = ({ id }) => {
             stretched
             size="l"
             mode="secondary"
-            onClick={() => routeNavigator.push("persik")}
+            onClick={() =>
+              routeNavigator.push(EMPLOYEES_VIEW.PANELS.EMPLOYEE_CARD)
+            }
           >
             Покажите Персика, пожалуйста!
           </Button>

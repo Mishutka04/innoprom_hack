@@ -7,7 +7,7 @@ import {
   Placeholder,
 } from "@vkontakte/vkui";
 import { useRouteNavigator } from "@vkontakte/vk-mini-apps-router";
-import PersikImage from "../assets/persik.png";
+import PersikImage from "@/assets/persik.png";
 
 export const Persik: FC<NavIdProps> = ({ id }) => {
   const routeNavigator = useRouteNavigator();

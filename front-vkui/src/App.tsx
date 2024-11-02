@@ -1,38 +1,21 @@
-import * as React from "react";
-import { createRoot } from "react-dom/client";
-import {
-  AdaptivityProvider,
-  ConfigProvider,
-  AppRoot,
-  SplitLayout,
-  SplitCol,
-  View,
-  Panel,
-  PanelHeader,
-  Header,
-  Group,
-  SimpleCell,
-} from "@vkontakte/vkui";
-import "@vkontakte/vkui/dist/vkui.css";
+import { View, SplitLayout, SplitCol, ScreenSpinner } from "@vkontakte/vkui";
+import { useActiveVkuiLocation } from "@vkontakte/vk-mini-apps-router";
 
-const App = () => {
+import { Persik, Home } from "./panels";
+import { DEFAULT_VIEW_PANELS } from "./config/routes.ts";
+
+export const App = () => {
+  const { panel: activePanel = DEFAULT_VIEW_PANELS.HOME } =
+    useActiveVkuiLocation();
+
   return (
-    <AppRoot>
-      <SplitLayout header={<PanelHeader delimiter="none" />}>
-        <SplitCol autoSpaced>
-          <View activePanel="main">
-            <Panel id="main">
-              <PanelHeader>VKUI</PanelHeader>
-              <Group header={<Header mode="secondary">Items</Header>}>
-                <SimpleCell>Hello</SimpleCell>
-                <SimpleCell>World</SimpleCell>
-              </Group>
-            </Panel>
-          </View>
-        </SplitCol>
-      </SplitLayout>
-    </AppRoot>
+    <SplitLayout>
+      <SplitCol>
+        <View activePanel={activePanel}>
+          <Home id="home" />
+          <Persik id="persik" />
+        </View>
+      </SplitCol>
+    </SplitLayout>
   );
 };
-
-export default App;

@@ -47,7 +47,7 @@ export const employeesApi = {
     return dummyReports[employeeId] || [];
   },
 
-  downloadReport: async (reportId: string) => {
+  downloadPdf: async (reportId: string) => {
     await new Promise((resolve) => setTimeout(resolve, 500));
     console.log("Downloading report:", reportId);
     // In real app, this would trigger file download

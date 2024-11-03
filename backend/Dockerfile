@@ -1,9 +1,20 @@
-FROM python:3.11.9-slim
+# Используем официальный образ Python
+FROM python:3.11-slim
 
-COPY requirements.txt requirements.txt
+# Устанавливаем рабочую директорию
+WORKDIR /app
 
-RUN pip insrall -r requirements.txt
+# Копируем файл зависимостей
+COPY requirements.txt .
 
+# Устанавливаем зависимости
+RUN pip install --upgrade pip && pip install -r requirements.txt
+
+# Копируем все файлы проекта в контейнер
 COPY . .
 
-CMD ["python", "manage.py", "runserver"]
+# Открываем порт для приложения
+EXPOSE 8000
+
+# Запускаем сервер Django
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]

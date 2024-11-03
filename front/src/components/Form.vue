@@ -82,7 +82,7 @@ const fetchUserAndEmployees = async () => {
       user.value = response.data[0]
       console.log(response.data[0])
     }
-    
+
     // Преобразуем данные для соответствия структуре employees
     // employees.value = response.data.map(user => ({
     //     id: user.id,

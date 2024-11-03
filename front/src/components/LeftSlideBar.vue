@@ -92,7 +92,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { defineEmits, defineProps } from 'vue'
-
+import axios from 'axios';
 const emit = defineEmits(['selectEployye'])
 
 const searchQuery = ref('')
@@ -116,7 +116,11 @@ const props = defineProps({
         required: true
     }
 })
+import { getCurrentInstance } from 'vue';
 
+// Accessing the global variable
+const instance = getCurrentInstance();
+const myGlobalVariable = instance.appContext.config.globalProperties.$globalUrl;
 const selectEmployee = async (employee) => {
     emit('selectEployye', employee.id)
 }
@@ -144,19 +148,14 @@ const startAnalysis = async () => {
             // Add any necessary fields here, for example:
             id: selectedAnalysisType.value,
         };
-
-        // const response = await axios.post(myGlobalVariable + '/generate/metric/', data);
-
-        if (Math.random() > 0.5) { // Имитация случайной ошибки
-            throw new Error('Произошла ошибка при выполнении анализа')
-        }
+        const response = await axios.post(myGlobalVariable + '/generate/metric/', data);
 
         analysisError.value = null
         showAnalysisModal.value = false
         showResultModal.value = true
         showWaitModal.value = false
     } catch (error) {
-        analysisError.value = error.message
+        analysisError.value = error.response.data
         showAnalysisModal.value = false
         showResultModal.value = true
         showWaitModal.value = false

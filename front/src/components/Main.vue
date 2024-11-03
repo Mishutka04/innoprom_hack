@@ -11,7 +11,7 @@
         <Header/>
 
         <div class="app-container">
-            <LeftSlideBar :employee="employees"  @selectEployye='fetchEmployeesCard'/> 
+            <LeftSlideBar :employee="employees" :metric="metric_list" @selectEployye='fetchEmployeesCard'/> 
 
             <!-- Right Content -->
             <RightContent :selectedEmployee="selectedEmployee" :skills="skills" @clearSelectedEmployee="clearSelectedEmployee" :metodology="methodologies"/>
@@ -31,7 +31,7 @@ import { getCurrentInstance } from 'vue';
 // Accessing the global variable
 const instance = getCurrentInstance();
 const myGlobalVariable = instance.appContext.config.globalProperties.$globalUrl;
-
+const metric_list = ref()
 const selectedEmployee = ref(null)
 
 const methodologies = ref()
@@ -72,6 +72,7 @@ const fetchEmployees = async () => {
     try {
         const response = await axios.get(myGlobalVariable + '/users/');
         const response_metric = await axios.get(myGlobalVariable + '/methodology/');
+        metric_list.value = response_metric.data
         console.log(response_metric, "111111111")
         // Преобразуем данные для соответствия структуре employees
         employees.value = response.data.map(user => ({

@@ -72,7 +72,7 @@ class EvaluateReviewsView(APIView):
         
         methodology_select_id = request.data.get("id")
         if not methodology_select_id:
-            return Response({'results': "Error"}, status=400)
+            return Response({'results': "Не найдена методология"}, status=400)
             
         form_answers = FormAnswer.objects.all().filter(methodology = Methodology.objects.get(pk=methodology_select_id))
     
@@ -107,13 +107,15 @@ class EvaluateReviewsView(APIView):
             
                 # Prepare the prompt
             prompt = prepare_prompt(reviews, metodic)
-            print(prompt)
+            
             # Evaluate the reviews with LLM
             evaluation_result = evaluate_reviews_with_llm(prompt)
             result_dict = json.loads(evaluation_result)
-            
-            if len(result_dict['criteries']) > 0:
-                return Response({'results': "Error"}, status=400)
+            try:
+                if "criteries" not in result_dict.keys() and len(result_dict['criteries']) < 1:
+                    return Response({'results': "Ошибка модели, повторите попытку"}, status=400)
+            except:
+                return Response({'results': "Ошибка модели, повторите попытку"}, status=400)
             # # evaluation_result_json = json.dumps(evaluation_result, ensure_ascii=False, indent=4)
             result_methodology = ResultMethodology(
                 user=user,

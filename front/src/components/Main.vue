@@ -65,7 +65,7 @@ const clearSelectedEmployee = () => {
 // Функция для получения сотрудников из API
 const fetchEmployees = async () => {
     try {
-        const response = await axios.get('http://127.0.0.1:8000/api/users/');
+        const response = await axios.get(this.$globalUrl + '/users/');
         console.log(response.data)
         // Преобразуем данные для соответствия структуре employees
         employees.value = response.data.map(user => ({
@@ -85,7 +85,7 @@ const fetchEmployees = async () => {
 // Функция для получения сотрудников из API
 const fetchEmployeesCard = async (id) => {
     try {
-        const response = await axios.get('http://127.0.0.1:8000/api/user/card/' + id + "/");
+        const response = await axios.get(this.$globalUrl + '/user/card/' + id + "/");
         console.log(response.data);
 
         // Преобразуем данные для соответствия структуре employees

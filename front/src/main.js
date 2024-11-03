@@ -3,5 +3,6 @@ import router from './router';
 import { createApp } from 'vue'
 import App from './App.vue'
 const app = createApp(App);
+app.config.globalProperties.$globalUrl = 'https://innoprom-hack.onrender.com/api'
 app.use(router);
 app.mount('#app');

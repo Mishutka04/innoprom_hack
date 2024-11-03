@@ -151,7 +151,7 @@ const clearSelectedEmployee = () => {
 // Функция для получения сотрудников из API
 const fetchEmployeesCard = async () => {
   try {
-    const response = await axios.get('http://127.0.0.1:8000/api/user/card/' + userId + "/");
+    const response = await axios.get(this.$globalUrl + '/user/card/' + userId + "/");
     console.log(response.data);
 
     // Преобразуем данные для соответствия структуре employees

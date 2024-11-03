@@ -72,7 +72,7 @@ const userId = route.params.id; // Получаем ID из URL
 const user = ref();
 const fetchUserAndEmployees = async () => {
   try {
-    const response = await axios.get('http://127.0.0.1:8000/api/user/' + userId + "/");
+    const response = await axios.get(this.$globalUrl + '/user/' + userId + "/");
     if (response.data && response.data.length) {
       user.value = response.data[0]
       console.log(response.data[0])

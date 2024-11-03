@@ -1,4 +1,4 @@
-import { Avatar, Cell, Headline } from "@vkontakte/vkui";
+import { Avatar, Cell, Footnote, Headline } from "@vkontakte/vkui";
 import { Icon16Chevron } from "@vkontakte/icons";
 import baseTheme from "@vkontakte/vkui-tokens/themes/vkBase/cssVars/theme";
 
@@ -24,23 +24,22 @@ export const EmployeeCell = ({
       mode={mode === "default" ? undefined : mode}
       before={<Avatar src={avatarSrc} />}
       after={<Icon16Chevron />}
+      indicator={
+        <Headline
+          level="1"
+          style={{ color: baseTheme.colorTextSecondary.normal.value }}
+        >
+          {rating}
+        </Headline>
+      }
       onClick={onClick}
-      style={{ display: "flex", flexDirection: "row", width: "100%" }}
     >
-      {/*<div>*/}
-      {/*  <Headline level="1" style={{ marginBottom: 2 }}>*/}
-      {/*    {position}*/}
-      {/*  </Headline>*/}
-      {/*  <Footnote style={{ color: baseTheme.colorTextSecondary.normal.value }}>*/}
-      {/*    Footnote*/}
-      {/*  </Footnote>*/}
-      {/*</div>*/}
-      <Headline
-        level="1"
-        style={{ color: baseTheme.colorTextSecondary.normal.value }}
-      >
-        4.7
+      <Headline level="1" style={{ marginBottom: 2 }}>
+        {name}
       </Headline>
+      <Footnote style={{ color: baseTheme.colorTextSecondary.normal.value }}>
+        {position}
+      </Footnote>
     </Cell>
   );
 };

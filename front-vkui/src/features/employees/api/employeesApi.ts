@@ -22,6 +22,26 @@ const dummyEmployees: Employee[] = [
     imageUrl:
       "https://sun9-70.userapi.com/c636327/v636327034/2be84/TYzZpZ8BL0k.jpg?ava=1",
   },
+  {
+    id: "3",
+    name: "Bob Johnson",
+    position: "Designer",
+    department: "Design",
+    email: "bob.johnson@company.com",
+    managerId: "2",
+    imageUrl:
+      "https://sun9-70.userapi.com/c636327/v636327034/2be84/TYzZpZ8BL0k.jpg?ava=1",
+  },
+  {
+    id: "4",
+    name: "Ann Smith",
+    position: "Designer",
+    department: "Design",
+    email: "ann.smith@company.com",
+    managerId: "2",
+    imageUrl:
+      "https://sun9-70.userapi.com/c636327/v636327034/2be84/TYzZpZ8BL0k.jpg?ava=1",
+  },
 ];
 
 const dummyReports: Record<string, EmployeeReport[]> = {

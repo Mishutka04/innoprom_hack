@@ -36,7 +36,7 @@ export const AppConfig = () => {
                 flexDirection: "column",
               }}
             >
-              <PanelHeader>Title here</PanelHeader>
+              <PanelHeader>Scoreworker</PanelHeader>
               <QueryClientProvider client={queryClient}>
                 <BrowserRouter>
                   <Routes>

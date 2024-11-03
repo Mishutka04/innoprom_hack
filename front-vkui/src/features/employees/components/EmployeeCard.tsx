@@ -32,18 +32,11 @@ export const EmployeeCard: React.FC<EmployeeCardProps> = ({
 
 const PlaceholderEmployeeCard: React.FC = () => {
   return (
-    <Div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignContent: "center",
-        alignItems: "center",
-      }}
+    <Placeholder
+      icon={<Image src="src/assets/persik.png" size={96} noBorder />}
     >
-      <Image src="src/assets/persik.png" size={96} noBorder />
-      <Placeholder>Сотрудник еще не выбран</Placeholder>
-    </Div>
+      Сотрудник еще не выбран
+    </Placeholder>
   );
 };
 

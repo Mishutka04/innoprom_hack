@@ -69,7 +69,12 @@ class ResultMethodologyListCreateView(generics.ListCreateAPIView):
 class EvaluateReviewsView(APIView):
     def post(self, request, *args, **kwargs):
         # Get all FormAnswer instances
-        form_answers = FormAnswer.objects.all()
+        
+        methodology_select_id = request.data.get("id")
+        if not methodology_select_id:
+            return Response({'results': "Error"}, status=400)
+            
+        form_answers = FormAnswer.objects.all().filter(methodology = Methodology.objects.get(pk=methodology_select_id))
     
         # Step 2: Create a dictionary to group users by their IDs
         user_groups = defaultdict(list)
@@ -102,12 +107,12 @@ class EvaluateReviewsView(APIView):
             
                 # Prepare the prompt
             prompt = prepare_prompt(reviews, metodic)
-
+            print(prompt)
             # Evaluate the reviews with LLM
             evaluation_result = evaluate_reviews_with_llm(prompt)
             result_dict = json.loads(evaluation_result)
-            print(result_dict['criteries'])
-            if len(result_dict['criteries']) != 0:
+            
+            if len(result_dict['criteries']) > 0:
                 return Response({'results': "Error"}, status=400)
             # # evaluation_result_json = json.dumps(evaluation_result, ensure_ascii=False, indent=4)
             result_methodology = ResultMethodology(

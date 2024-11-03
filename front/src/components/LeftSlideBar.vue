@@ -60,9 +60,9 @@
             <h3>Выберите направление анализа</h3>
             <select v-model="selectedAnalysisType" class="dropdown">
                 <option value="">Выберите направление</option>
-                <option value="performance">Производительность</option>
-                <option value="skills">Навыки</option>
-                <option value="teamwork">Работа в команде</option>
+                <option v-for="type in metric" :value="type.id">
+                    {{ type.name }}
+                </option>
             </select>
             <div class="modal-actions">
                 <button @click="startAnalysis" :disabled="!selectedAnalysisType" class="start-button">
@@ -110,6 +110,10 @@ const props = defineProps({
     employee: {
         type: Array,
         required: true
+    },
+    metric: {
+        type: Array,
+        required: true
     }
 })
 
@@ -118,7 +122,7 @@ const selectEmployee = async (employee) => {
 }
 
 const genders = ['Любой', 'Мужской', 'Женский']
-
+const select_matric_id = ref();
 const filteredEmployees = computed(() => {
     return props.employee.filter(employee => {
         const matchesSearch = employee.name.toLowerCase().includes(searchQuery.value.toLowerCase())
@@ -138,11 +142,11 @@ const startAnalysis = async () => {
         // await new Promise(resolve => setTimeout(resolve, 2000)) // Имитация асинхронной операции
         const data = {
             // Add any necessary fields here, for example:
-            userId: id,
-            additionalInfo: 'some value'
+            id: selectedAnalysisType.value,
         };
 
-        const response = await axios.post(myGlobalVariable + '/user/card/', data);
+        // const response = await axios.post(myGlobalVariable + '/generate/metric/', data);
+
         if (Math.random() > 0.5) { // Имитация случайной ошибки
             throw new Error('Произошла ошибка при выполнении анализа')
         }

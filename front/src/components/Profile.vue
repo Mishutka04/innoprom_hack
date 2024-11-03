@@ -1,5 +1,5 @@
 <template>
-  <div class="page-container">
+  <div class="page-container" ref="pageContainer" v-if="skills && Object.keys(skills).length > 0">
     <!-- Header -->
     <Header />
 
@@ -14,8 +14,8 @@
             <p class="profile-position">{{ selectedEmployee.position }}</p>
           </div>
           <div class="profile-actions">
-            <ButtonCSV/>
-            <ButtonPdf/>
+            <ButtonCSV @click="exportToPDF" />
+            <ButtonPdf />
           </div>
         </div>
 
@@ -38,8 +38,9 @@
         </div>
       </div>
       <!-- Skills user -->
-      <div class="skills-section-card" v-if="skills.length > 0">
-        <div class="skill-item" v-for="(item, index) in skills" v-if="selectedEmployee">
+      <div class="skills-section" v-for="(skill, index) in skills" v-if="skills && Object.keys(skills).length > 0">
+        <h1>Блок 1</h1>
+        <div class="skill-item" v-for="(item, index) in skill">
           <div class="skill-header">
             <h4>{{ item.skill }}</h4>
             <div class="star-rating">
@@ -52,40 +53,10 @@
 
 
       </div>
-      <!-- Skills user -->
-      <div class="skills-section">
-        <h1>Блок компеценций</h1>
-        <div class="skill-item">
-          <div class="skill-header">
-            <h4>Скиыфв</h4>
-            <div class="star-rating">
-              <span v-for="i in 5" :key="i" class="star" :class="{ filled: i <= 5 }">★</span>
-            </div>
-          </div>
-          <p>фыв</p>
-        </div>
-        <div class="skill-item">
-          <div class="skill-header">
-            <h4>Скиыфв</h4>
-            <div class="star-rating">
-              <span v-for="i in 5" :key="i" class="star" :class="{ filled: i <= 5 }">★</span>
-            </div>
-          </div>
-          <p>фыв</p>
-        </div>
-        <div class="skill-item">
-          <div class="skill-header">
-            <h4>Скиыфв</h4>
-            <div class="star-rating">
-              <span v-for="i in 5" :key="i" class="star" :class="{ filled: i <= 5 }">★</span>
-            </div>
-          </div>
-          <p>фыв</p>
-        </div>
 
 
 
-      </div>
+
       <!-- Skills Chart -->
       <div class="skills-section">
         <h1>Блок карточек</h1>
@@ -96,6 +67,18 @@
       </div>
     </main>
   </div>
+  <template v-else>
+    <div class="container">
+      <div class="placeholder-state">
+        <div class="placeholder-icon">
+          <img src="../assets/image.png" alt="Placeholder bear">
+        </div>
+        <p class="placeholder-text">У данного пользователя нету данных по его компетенциям.
+          <b>Запустите процесс анализа, чтобы получить метрики компетенций!</b>
+        </p>
+      </div>
+    </div>
+  </template>
 </template>
 
 <script setup>
@@ -155,6 +138,36 @@ import { getCurrentInstance } from 'vue';
 const instance = getCurrentInstance();
 const myGlobalVariable = instance.appContext.config.globalProperties.$globalUrl;
 
+import html2pdf from 'html2pdf.js';
+const pageContainer = ref(null); // Ссылка на весь элемент page-container
+const fullPage = ref(null); // Ссылка на весь элемент страницы
+
+const exportToPDF = () => {
+  setTimeout(() => {
+    const element = pageContainer.value;
+    console.log(element)
+
+    if (!element) {
+      console.error("Элемент не найден!");
+      return;
+    }
+
+    const options = {
+      margin: 1,
+      filename: 'generated-pdf.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+    };
+
+    html2pdf()
+      .from(element)
+      .set(options)
+      .save(); // Сохранение файла
+  }, 1000); // Ожидание загрузки ресурсов
+};
+
+
 const fetchEmployeesCard = async () => {
   try {
     const response = await axios.get(myGlobalVariable + '/user/card/' + userId + "/");
@@ -191,6 +204,32 @@ onMounted(fetchEmployeesCard);
 
 <style scoped>
 /* Global Styles */
+.container {
+  display: flex;
+  justify-content: center; /* Центрирование по горизонтали */
+  align-items: center; /* Центрирование по вертикали */
+  height: 100svh; /* Высота контейнера на весь экран */
+}
+
+.placeholder-state {
+  text-align: center;
+  padding: 40px 0;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  width: 400px; /* Задайте нужную ширину */
+}
+
+.placeholder-icon img {
+  width: 64px;
+  height: 64px;
+  margin-bottom: 16px;
+}
+
+.placeholder-text {
+  font-size: 16px;
+  color: #818c99;
+}
 
 .review-count {
   font-size: 13px;
@@ -400,7 +439,7 @@ body {
 
 .description-text {
   color: #4b5563;
-  
+
 }
 
 /* Reviewers Section Styles */

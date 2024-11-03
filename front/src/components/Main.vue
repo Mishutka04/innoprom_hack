@@ -11,7 +11,7 @@
         <Header/>
 
         <div class="app-container">
-            <LeftSlideBar :employee="employees" @selectEployye='fetchEmployeesCard'/>
+            <LeftSlideBar :employee="employees"  @selectEployye='fetchEmployeesCard'/> 
 
             <!-- Right Content -->
             <RightContent :selectedEmployee="selectedEmployee" :skills="skills" @clearSelectedEmployee="clearSelectedEmployee" :metodology="methodologies"/>
@@ -71,6 +71,8 @@ const clearSelectedEmployee = () => {
 const fetchEmployees = async () => {
     try {
         const response = await axios.get(myGlobalVariable + '/users/');
+        const response_metric = await axios.get(myGlobalVariable + '/methodology/');
+        console.log(response_metric, "111111111")
         // Преобразуем данные для соответствия структуре employees
         employees.value = response.data.map(user => ({
             id: user.id,
@@ -90,6 +92,7 @@ const fetchEmployees = async () => {
 const fetchEmployeesCard = async (id) => {
     try {
         const response = await axios.get(myGlobalVariable + '/user/card/' + id + "/");
+        console.log(response.data)
 
         // Преобразуем данные для соответствия структуре employees
         const user = response.data.user_profile; // Извлекаем объект user_profile
@@ -105,6 +108,7 @@ const fetchEmployeesCard = async (id) => {
             user_card: response.data.user_card[0]
         };
         methodologies.value = response.data.methodologies
+        
 
     } catch (error) {
         console.error('Ошибка при получении сотрудников:', error);

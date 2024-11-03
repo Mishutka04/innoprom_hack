@@ -1,5 +1,4 @@
 import baseTheme from "@vkontakte/vkui-tokens/themes/vkBase/cssVars/theme";
-
 import {
   Avatar,
   Card,
@@ -15,18 +14,27 @@ import {
 } from "@vkontakte/vkui";
 import { Icon16StarAlt } from "@vkontakte/icons";
 import StarRating from "@/features/employees/components/StarRating.tsx";
+import { Employee, Skill } from "@/types/employee.ts";
 
 interface Props {
   avatarSrc: string;
   name: string;
-  // TODO other
+  position: string;
+  rating: number;
+  description: string;
+  reviewers: Employee[];
+  skills: Skill[];
 }
 
 export const EmployeeCardBodyText = ({
-  props: { avatarSrc, name },
-}: {
-  props: Props;
-}) => {
+  avatarSrc,
+  name,
+  position,
+  rating,
+  description,
+  reviewers,
+  skills,
+}: Props) => {
   return (
     <>
       {/* Employee info header */}
@@ -47,13 +55,13 @@ export const EmployeeCardBodyText = ({
             alignItems: "start",
           }}
         >
-          <Title level="1">Иванов Вася</Title>
+          <Title level="1">{name}</Title>
           <Title
             level="3"
             weight="3"
             style={{ color: baseTheme.colorTextSubhead.normal.value }}
           >
-            Middle back-end developer
+            {position}
           </Title>
         </Div>
         <Header
@@ -65,24 +73,17 @@ export const EmployeeCardBodyText = ({
           }
           style={{ padding: 0, alignSelf: "flex-start" }}
         >
-          4.7
+          {rating}
         </Header>
       </div>
 
       {/* Text summary */}
       <Card>
         <Div>
-          <Headline level="1" style={{ marginBottom: 2 }} weight={"1"}>
+          <Headline level="1" style={{ marginBottom: 2 }} weight="1">
             Краткое описание
           </Headline>
-          <Paragraph>
-            Звезда нашего детского сада. Он всегда улыбается и готов порадовать
-            окружающих своим обаянием! Его позитивный настрой и дружелюбие
-            делают группу более сплоченной. Вася любит участвовать в играх, а
-            его стремление к обучению вдохновляет не только сверстников, но и
-            воспитателей. Мы уверены, что с такими качествами он в будущем
-            станет настоящим лидером!
-          </Paragraph>
+          <Paragraph>{description}</Paragraph>
         </Div>
       </Card>
       <Spacing size={4} />
@@ -90,20 +91,11 @@ export const EmployeeCardBodyText = ({
       {/* Reviewers */}
       <Div style={{ display: "flex", flexDirection: "row" }}>
         <UsersStack
-          photos={[
-            "https://sun9-70.userapi.com/c636327/v636327034/2be84/TYzZpZ8BL0k.jpg?ava=1",
-            "https://sun9-70.userapi.com/c636327/v636327034/2be84/TYzZpZ8BL0k.jpg?ava=1",
-            "https://sun9-70.userapi.com/c636327/v636327034/2be84/TYzZpZ8BL0k.jpg?ava=1",
-            "https://sun9-70.userapi.com/c636327/v636327034/2be84/TYzZpZ8BL0k.jpg?ava=1",
-            "https://sun9-70.userapi.com/c636327/v636327034/2be84/TYzZpZ8BL0k.jpg?ava=1",
-            "https://sun9-70.userapi.com/c636327/v636327034/2be84/TYzZpZ8BL0k.jpg?ava=1",
-            "https://sun9-70.userapi.com/c636327/v636327034/2be84/TYzZpZ8BL0k.jpg?ava=1",
-            "https://sun9-70.userapi.com/c636327/v636327034/2be84/TYzZpZ8BL0k.jpg?ava=1",
-          ]}
+          photos={reviewers.map((r) => r.imageUrl)}
           size="l"
           direction="row"
         >
-          Оценка на основе 8 отзывов
+          {`Оценка на основе ${reviewers.length} отзывов`}
         </UsersStack>
       </Div>
 
@@ -113,53 +105,25 @@ export const EmployeeCardBodyText = ({
 
       {/* Skill Cards */}
       <CardGrid size="l">
-        {[
-          {
-            skill: "Командная работа",
-            rating: 5,
-            description:
-              "Всегда готов прийти на помощь своему другу Пете. " +
-              "Он отлично умеет делиться игрушками и не ругается, когда кто-то берет его машинку на время. В" +
-              "месте они строят невероятные горки из кубиков и при этом никогда не ссорятся, что " +
-              "делает занятия в группе настоящим праздником.",
-          },
-          {
-            skill: "Творческие навыки",
-            rating: 4,
-            description:
-              "Он всегда рисует яркие рисунки на занятиях и не забывает рассказывать всем " +
-              "смешные истории о своих персонажах. Ни одно утро в детском саду не " +
-              "обходится без удивительных сказок о приключениях лисички и зайца.",
-          },
-          {
-            skill: "Управляемость",
-            rating: 3,
-            description:
-              "Очень хорошо делает задачи с коллегами и руководителями, " +
-              "всегда готов помочь и поддержать. Слушает маму и папу, " +
-              "кушает кашу, не разговаривает с незнакомыми дядями на улицах.",
-          },
-        ].map((x) => {
-          return (
-            <Card mode="outline">
-              <Div>
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <Headline level="1" weight={"1"} style={{ marginBottom: 2 }}>
-                    {x.skill}
-                  </Headline>
-                  <StarRating rating={x.rating} />
-                </div>
-                <Paragraph>{x.description}</Paragraph>
-              </Div>
-            </Card>
-          );
-        })}
+        {skills.map((skill) => (
+          <Card mode="outline" key={skill.name}>
+            <Div>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Headline level="1" weight="1" style={{ marginBottom: 2 }}>
+                  {skill.name}
+                </Headline>
+                <StarRating rating={skill.rating} />
+              </div>
+              <Paragraph>{skill.description}</Paragraph>
+            </Div>
+          </Card>
+        ))}
       </CardGrid>
     </>
   );

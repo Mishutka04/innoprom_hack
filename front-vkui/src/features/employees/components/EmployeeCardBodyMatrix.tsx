@@ -5,6 +5,10 @@ interface Props {
   aaa: string;
 }
 
-export const CardBodyMatrix = ({ props: { aaa } }: { props: Props }) => {
+export const EmployeeCardBodyMatrix = ({
+  props: { aaa },
+}: {
+  props: Props;
+}) => {
   return <Card>Matrix here</Card>;
 };

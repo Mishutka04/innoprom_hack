@@ -16,8 +16,8 @@ import {
   TabsItem,
 } from "@vkontakte/vkui";
 import React from "react";
-import { CardBodyText } from "@/features/employees/components/CardBodyText.tsx";
-import { CardBodyMatrix } from "@/features/employees/components/CardBodyMatrix.tsx";
+import { EmployeeCardBodyText } from "@/features/employees/components/EmployeeCardBodyText.tsx";
+import { EmployeeCardBodyMatrix } from "@/features/employees/components/EmployeeCardBodyMatrix.tsx";
 import baseTheme from "@vkontakte/vkui-tokens/themes/vkBase/cssVars/theme";
 import { useNavigate } from "react-router-dom";
 
@@ -62,7 +62,7 @@ const FilledEmployeeCard: React.FC<{ employee: Employee }> = ({ employee }) => {
   const navigate = useNavigate();
 
   const handleCloseClick = () => {
-    navigate(-1);
+    navigate("/");
   };
   const { data: reports } = useQuery({
     queryKey: ["employeeReports", employee.id],
@@ -122,7 +122,7 @@ const FilledEmployeeCard: React.FC<{ employee: Employee }> = ({ employee }) => {
       <div style={{ flex: 1, width: "100%" }}>
         <Div>
           {cardBody === "text" ? (
-            <CardBodyText
+            <EmployeeCardBodyText
               props={{
                 name: "Иван Иванов",
                 avatarSrc:
@@ -130,7 +130,7 @@ const FilledEmployeeCard: React.FC<{ employee: Employee }> = ({ employee }) => {
               }}
             />
           ) : (
-            <CardBodyMatrix props={{ aaa: "bbb" }} /> //TODO
+            <EmployeeCardBodyMatrix props={{ aaa: "bbb" }} /> //TODO
           )}
         </Div>
       </div>

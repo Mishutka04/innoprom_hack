@@ -22,7 +22,7 @@ interface Props {
   // TODO other
 }
 
-export const CardBodyText = ({
+export const EmployeeCardBodyText = ({
   props: { avatarSrc, name },
 }: {
   props: Props;

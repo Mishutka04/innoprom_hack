@@ -1,16 +1,16 @@
 <template>
   <div class="evaluation-page">
     <!-- Header -->
-    <Header/>
+    <Header />
 
     <!-- User Info Section -->
-    <section class="user-info">
+    <section class="user-info" v-if="user">
       <div class="user-card">
         <h2>Ваш профиль</h2>
         <div class="profile-details">
-          <p><strong>ФИО:</strong> {{ currentUser.name }}</p>
-          <p><strong>Департамент:</strong> {{ currentUser.department }}</p>
-          <p><strong>Направление:</strong> {{ currentUser.role }}</p>
+          <p><strong>ФИО:</strong> {{ user.full_name }}</p>
+          <p><strong>Департамент:</strong> {{ user.department }}</p>
+          <p><strong>Направление:</strong> {{ user.position }}</p>
         </div>
       </div>
     </section>
@@ -18,15 +18,11 @@
     <!-- Evaluation Form -->
     <section class="evaluation-form">
       <h2>Оставить отзыв</h2>
-      
+
       <!-- Employee Selection -->
       <div class="form-group">
         <label for="employee">Выберите сотрудника:</label>
-        <select 
-          v-model="selectedEmployee"
-          id="employee"
-          class="form-select"
-        >
+        <select v-model="selectedEmployee" id="employee" class="form-select">
           <option value="">Выберите сотрудника</option>
           <option v-for="emp in employees" :key="emp.id" :value="emp.id">
             {{ emp.name }}
@@ -37,21 +33,12 @@
       <!-- Feedback Text -->
       <div class="form-group" v-if="selectedEmployee">
         <label for="feedback">Ваш отзыв:</label>
-        <textarea
-          v-model="feedback"
-          id="feedback"
-          rows="4"
-          placeholder="Напишите ваш отзыв здесь..."
-          class="form-textarea"
-        ></textarea>
+        <textarea v-model="feedback" id="feedback" rows="4" placeholder="Напишите ваш отзыв здесь..."
+          class="form-textarea"></textarea>
       </div>
 
       <!-- Submit Button -->
-      <button 
-        @click="submitFeedback"
-        :disabled="!canSubmit"
-        class="submit-button"
-      >
+      <button @click="submitFeedback" :disabled="!canSubmit" class="submit-button">
         Отправить отзыв
       </button>
     </section>
@@ -75,8 +62,39 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import Header from './Header.vue';
+
+import { useRoute } from 'vue-router';
+import axios from 'axios';
+const route = useRoute();
+const userId = route.params.id; // Получаем ID из URL
+const user = ref();
+const fetchUserAndEmployees = async () => {
+  try {
+    const response = await axios.get('http://127.0.0.1:8000/api/user/' + userId + "/");
+    if (response.data && response.data.length) {
+      user.value = response.data[0]
+      console.log(response.data[0])
+    }
+    
+    // Преобразуем данные для соответствия структуре employees
+    // employees.value = response.data.map(user => ({
+    //     id: user.id,
+    //     name: user.full_name,
+    //     position: user.position || 'Не указана',
+    //     rating: 5, // Замените на реальный рейтинг, если доступен
+    //     avatar: user.photo || '../assets/user.png',
+    //     description: 'Описание сотрудника отсутствует.', // Замените на реальное описание, если доступно
+    //     reviewers: Array(8).fill('../assets/user.png') // Замените на реальные аватары, если доступны
+    // }));
+
+  } catch (error) {
+    console.error('Ошибка при получении сотрудников:', error);
+  }
+};
+
+onMounted(fetchUserAndEmployees);
 // Mock data
 const currentUser = {
   name: 'Иванов Петр Сергеевич',
@@ -273,6 +291,7 @@ label {
 
 /* Responsive Design */
 @media (max-width: 640px) {
+
   .user-info,
   .evaluation-form {
     margin: 12px;

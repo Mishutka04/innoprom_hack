@@ -20,7 +20,7 @@
 
                 <div v-if="activeTab === 'text'">
 
-                    <div class="profile-section">
+                    <div class="profile-section" v-if="skills && Object.keys(skills).length > 0">
                         <div class="profile-info">
                             <img src="../assets/user.png" :alt="selectedEmployee.name" class="profile-avatar">
                             <div class="profile-details">
@@ -28,8 +28,13 @@
                                 <p>{{ selectedEmployee.position }}</p>
                             </div>
                             <div class="profile-rating">
-                                {{ selectedEmployee.rating }}
-                                <span class="star-icon">★</span>
+                                <div>{{ selectedEmployee.rating }}
+                                    <span class="star-icon">★</span>
+                                </div>
+
+                                <div class="bnt-user">
+                                    <ButtonUser />
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -39,7 +44,7 @@
                         <p>{{ selectedEmployee.user_card.description }}</p>
                     </div>
 
-                    <div class="reviewers-section">
+                    <div class="reviewers-section" v-if="skills && Object.keys(skills).length > 0">
                         <div class="reviewer-avatars">
                             <img v-for="(reviewer, index) in selectedEmployee.reviewers.slice(0, 3)" :key="index"
                                 src="../assets/user.png" :alt="'Reviewer ' + (index + 1)" class="reviewer-avatar">
@@ -48,34 +53,54 @@
                         <span class="review-count">
                             Оценка на основе 8 отзывов
                         </span>
+
+
                     </div>
 
-                    <div class="skills-section" v-if="skills.length > 0">
-                        <div class="skill-item" v-for="(item, index) in skills" v-if="selectedEmployee">
-                            <div class="skill-header">
-                                <h4>{{ item.skill }}</h4>
-                                <div class="star-rating">
-                                    <span v-for="i in 5" :key="i" class="star"
-                                        :class="{ filled: i <= item.star }">★</span>
+                    <div class="skills-section" v-if="skills && Object.keys(skills).length > 0">
+                        <div v-for="(item, index) in skills">
+                            <h1>Hard Skill</h1>
+                            <div class="skill-item" v-for="(card, index) in item" v-if="item">
+                                <div class="skill-header">
+                                    <h4>{{ card.skill }}</h4>
+                                    <div class="star-rating">
+                                        <span v-for="i in 5" :key="i" class="star"
+                                            :class="{ filled: i <= card.star }">★</span>
+                                    </div>
                                 </div>
+                                <p>{{ card.description }}</p>
                             </div>
-                            <p>{{ item.description }}</p>
+
                         </div>
-
-
                     </div>
-                    <div v-else>Для более подробной информации запустите процесс анализа отзывов</div>
+                    <template v-else>
+                        <div class="placeholder-state">
+                            <div class="placeholder-icon">
+                                <img src="../assets/image.png" alt="Placeholder bear">
+                            </div>
+                            <p class="placeholder-text">У данного пользователя нету оценок компетенций. <b>Запустите
+                                    его, чтобы получить данные!</b> </p>
+                        </div>
+                    </template>
 
-                    <div class="download-buttons">
+                    <div class="download-buttons" v-if="skills && Object.keys(skills).length > 0">
                         <ButtonCSV />
                         <ButtonPdf />
                     </div>
                 </div>
                 <template v-else>
-                    <div v-for="(item, index) in skills" v-if="skills">
+                    <div v-for="(item, index) in skills" v-if="skills && Object.keys(skills).length > 0">
                         <CompetencyRadarChart :skills="item" :id="index" />
                     </div>
-                    <div v-else>Запустите процесс анализа карточек</div>
+                    <template v-else>
+                        <div class="placeholder-state">
+                            <div class="placeholder-icon">
+                                <img src="../assets/image.png" alt="Placeholder bear">
+                            </div>
+                            <p class="placeholder-text">У данного пользователя нету данных по его компетенциям.
+                                <b>Запустите процесс анализа, чтобы получить метрики компетенций!</b> </p>
+                        </div>
+                    </template>
 
                 </template>
             </template>
@@ -96,6 +121,7 @@ import CompetencyRadarChart from './CompetencyRadarChart.vue';
 import { defineEmits } from 'vue';
 import ButtonCSV from './ButtonCSV.vue'
 import ButtonPdf from './ButtonPdf.vue'
+import ButtonUser from './ButtonUser.vue'
 const emit = defineEmits(['clearSelectedEmployee']);
 
 const activeTab = ref('text');
@@ -123,4 +149,11 @@ const handleBackButtonClick = () => {
 
 
 </script>
-<style></style>
+<style>
+.bnt-user {
+    justify-content: end;
+    align-items: end;
+    display: flex;
+    margin-top: 20px;
+}
+</style>

@@ -54,7 +54,7 @@
       </div>
       <!-- Skills user -->
       <div class="skills-section">
-        <div>Блок компеценций</div>
+        <h1>Блок компеценций</h1>
         <div class="skill-item">
           <div class="skill-header">
             <h4>Скиыфв</h4>
@@ -88,7 +88,7 @@
       </div>
       <!-- Skills Chart -->
       <div class="skills-section">
-        <div>Блок карточек</div>
+        <h1>Блок карточек</h1>
         <div v-for="(item, index) in skills" v-if="skills">
           <CompetencyRadarChart :skills="item" :id="index" />
         </div>
@@ -108,6 +108,10 @@ import Header from './Header.vue'
 import CompetencyRadarChart from './CompetencyRadarChart.vue'
 const chartRef = ref(null)
 const selectedEmployee = ref(null)
+import { useRoute } from 'vue-router';
+
+const route = useRoute();
+const userId = route.params.id; // Получаем ID из URL
 
 const methodologies = ref()
 const skills = ref([])
@@ -147,7 +151,7 @@ const clearSelectedEmployee = () => {
 // Функция для получения сотрудников из API
 const fetchEmployeesCard = async () => {
   try {
-    const response = await axios.get('http://127.0.0.1:8000/api/user/card/2/');
+    const response = await axios.get('http://127.0.0.1:8000/api/user/card/' + userId + "/");
     console.log(response.data);
 
     // Преобразуем данные для соответствия структуре employees
@@ -226,7 +230,7 @@ onMounted(fetchEmployeesCard);
 }
 
 .star.filled {
-  color: #ffd700;
+  color: #2563eb;
 }
 
 .skill-item p {
@@ -326,7 +330,8 @@ body {
 .profile-info {
   margin-top: 1rem;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: start;
 }
 
 @media (min-width: 640px) {

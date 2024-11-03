@@ -39,6 +39,16 @@ class FormAnswer(models.Model):
 
     def __str__(self):
         return f"Answers by {self.user_given.full_name} for {self.methodology.name}"
+    
+    
+class NeedAnswer(models.Model):
+    user_given = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='need_user_given')  # Связь с профилем пользователя
+    user_accept = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='need_user_accepted')  # Связь с профилем пользователя
+    methodology = models.ForeignKey(Methodology, on_delete=models.CASCADE)  # Связь с методологией
+    status = models.BooleanField()  # Ответы в формате JSON
+
+    def __str__(self):
+        return f"Пользователь {self.user_given.full_name} дал отзыв {self.user_accept.full_name}"
 
 
 class ResultMethodology(models.Model):

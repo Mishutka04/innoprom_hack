@@ -37,6 +37,12 @@ class CombinedUserProfileMethodologyView(generics.GenericAPIView):
 class UserProfileListCreateView(generics.ListCreateAPIView):
     queryset = UserProfile.objects.all()
     serializer_class = UserProfileSerializer
+    
+    def get_queryset(self):
+        pk = self.kwargs.get('pk')  # Получаем значение pk из URL
+        if pk is not None:
+            return UserProfile.objects.filter(pk=pk)  # Возвращаем методологии с указанным pk
+        return UserProfile.objects.all()  # Если pk не указан, возвращаем все методологии
 
 class MethodologyListCreateView(generics.ListCreateAPIView):
     serializer_class = MethodologySerializer

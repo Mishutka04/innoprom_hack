@@ -413,10 +413,11 @@ onMounted(fetchEmployees);
     display: flex;
     align-items: center;
     gap: 4px;
+    flex-direction: column;
   }
   
   .star-icon {
-    color: #ffd700;
+    color: #2688EB;
   }
   
   .description-section {
@@ -494,6 +495,7 @@ onMounted(fetchEmployees);
     border: 1px solid #e7e8ec;
     border-radius: 8px;
     padding: 16px;
+    margin-top: 1.5rem
   }
   
   .skill-header {
@@ -521,7 +523,7 @@ onMounted(fetchEmployees);
   }
   
   .star.filled {
-    color: #ffd700;
+    color: #2688EB;
   }
   
   .skill-item p {
@@ -555,9 +557,10 @@ onMounted(fetchEmployees);
   .arrow-right {
     width: 8px;
     height: 8px;
-    border-right: 2px solid #818c99;
-    border-bottom: 2px solid #818c99;
+    border-right: 2px solid #2688eb;
+    border-bottom: 2px solid #2688eb;
     transform: rotate(-45deg);
+    color: #0077ff
   }
   
   .placeholder-state {

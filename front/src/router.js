@@ -6,9 +6,9 @@ import Auth from './components/Auth.vue';
 export default createRouter({
     history: createWebHashHistory(),
     routes: [
-        { name: 'product1', path: '/form/', component: Form },
+        { name: 'product1', path: '/form/:id', component: Form },
         { name: 'product21', path: '/search/', component: Main },
-        { name: 'prsoduct21', path: '/profile/', component: Profile },
+        { name: 'prsoduct21', path: '/profile/:id', component: Profile },
         { name: 'prsoduct221', path: '/auth/', component: Auth },
 
 

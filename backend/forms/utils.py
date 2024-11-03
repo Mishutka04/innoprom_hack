@@ -27,7 +27,7 @@ def evaluate_reviews_with_llm(prompt):
         "prompt": [prompt],
         "apply_chat_template": True,
         "system_prompt": "You are a helpful assistant. Ответ на русском. По каждому критерию запиши в properties данные. Criteria - название критерия, comment - комментарий, star - Оценка от 1 - до 5.",
-        "max_tokens": 400,
+        "max_tokens": 1200,
         "n": 1,
         "temperature": 0.7,
         "schema": json.dumps({
@@ -53,10 +53,11 @@ def evaluate_reviews_with_llm(prompt):
     headers = {
         "Content-Type": "application/json"
     }
-
-    response = requests.post(url, data=json.dumps(data), headers=headers)
+    
+    response = requests.post(url, data=json.dumps(data, ensure_ascii=False).encode('utf-8'), headers=headers)
 
     if response.status_code == 200:
+        print(response.json())
         return response.json()
     else:
         return f"Error: {response.status_code} - {response.text}"

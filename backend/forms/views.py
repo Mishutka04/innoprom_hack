@@ -30,7 +30,7 @@ class CombinedUserProfileMethodologyView(generics.GenericAPIView):
             "methodologies": methodology_serializer.data,
             "user_card": user_card_serializer.data,
         }
-        print(response_data)
+        
         return Response(response_data)
 
 
@@ -39,8 +39,13 @@ class UserProfileListCreateView(generics.ListCreateAPIView):
     serializer_class = UserProfileSerializer
 
 class MethodologyListCreateView(generics.ListCreateAPIView):
-    queryset = Methodology.objects.all()
     serializer_class = MethodologySerializer
+
+    def get_queryset(self):
+        pk = self.kwargs.get('pk')  # Получаем значение pk из URL
+        if pk is not None:
+            return Methodology.objects.filter(pk=pk)  # Возвращаем методологии с указанным pk
+        return Methodology.objects.all()  # Если pk не указан, возвращаем все методологии
 
 class StatusMethodologyListCreateView(generics.ListCreateAPIView):
     queryset = StatusMethodology.objects.all()
@@ -64,7 +69,7 @@ class EvaluateReviewsView(APIView):
         user_groups = defaultdict(list)
     
         for form_answer in form_answers:
-            user_id = form_answer.user.id  # Get user ID
+            user_id = form_answer.user_accept.id  # Get user ID
             user_groups[user_id].append(form_answer)  # Append user to the corresponding ID group
     
 
@@ -76,13 +81,12 @@ class EvaluateReviewsView(APIView):
             metod = None
             user = None
             for query in user_groups[user_id]:
-                print("TEST", query.methodology)
                 # Extract methodology and answers
                 methodology = query.methodology
                 answers = query.answers['answer']
                 if not metod or user:
                     metod = query.methodology
-                    user = query.user
+                    user = query.user_accept
                     
                 if not metodic:
                     
@@ -92,11 +96,14 @@ class EvaluateReviewsView(APIView):
             
                 # Prepare the prompt
             prompt = prepare_prompt(reviews, metodic)
-            
+
             # Evaluate the reviews with LLM
             evaluation_result = evaluate_reviews_with_llm(prompt)
+            result_dict = json.loads(evaluation_result)
+            print(result_dict['criteries'])
+            if len(result_dict['criteries']) != 0:
+                return Response({'results': "Error"}, status=400)
             # # evaluation_result_json = json.dumps(evaluation_result, ensure_ascii=False, indent=4)
-        
             result_methodology = ResultMethodology(
                 user=user,
                 methodology=methodology,
@@ -107,4 +114,4 @@ class EvaluateReviewsView(APIView):
             result_methodology.save()
             
             # Save results (you may need to adjust this part based on your model)
-        return JsonResponse({'results': "Okey"}, status=200)
+        return Response({'results': "Okey"}, status=200)

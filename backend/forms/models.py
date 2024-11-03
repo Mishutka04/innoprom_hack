@@ -32,12 +32,13 @@ class StatusMethodology(models.Model):
 
 
 class FormAnswer(models.Model):
-    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)  # Связь с профилем пользователя
+    user_given = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='answers_given')  # Связь с профилем пользователя
+    user_accept = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='answers_accepted')  # Связь с профилем пользователя
     methodology = models.ForeignKey(Methodology, on_delete=models.CASCADE)  # Связь с методологией
     answers = models.JSONField()  # Ответы в формате JSON
 
     def __str__(self):
-        return f"Answers by {self.user.full_name} for {self.methodology.name}"
+        return f"Answers by {self.user_given.full_name} for {self.methodology.name}"
 
 
 class ResultMethodology(models.Model):

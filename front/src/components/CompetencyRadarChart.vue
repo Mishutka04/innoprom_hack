@@ -1,5 +1,5 @@
 <template>
-  <div class="chart-container">
+  <div class="chart-container" v-if="skills">
     <canvas ref="chartRef"></canvas>
   </div>
 </template>
@@ -7,29 +7,37 @@
 <script setup>
 import { ref, onMounted, watch } from 'vue';
 import Chart from 'chart.js/auto';
+import axios from 'axios';
 
 const props = defineProps({
   skills: {
     type: Array,
     required: true
+  },
+  id: {
+    type: String,
+    required: true // Указывает, что этот пропс обязателен
   }
 });
 
 const chartRef = ref(null);
 let chart = null;
 
-const createChart = () => {
+const createChart = async () => {
   const ctx = chartRef.value.getContext('2d');
-  console.log("CSA", props.skills)
-  const labels = props.skills.map(skill => skill.skill);
-  const data = props.skills.map(skill => skill.star);
-
+  const labels = [];
+  const data = [];
+  const names = ["Soft", "Soft","Hard"]
+  for (let i = 0; i < Object.keys(props.skills).length; i++) {
+    labels.push(props.skills[i].skill)
+    data.push(props.skills[i].star)
+  }
   chart = new Chart(ctx, {
     type: 'radar',
     data: {
       labels: labels,
       datasets: [{
-        label: 'Soft-Skill',
+        label: names[props.id],
         data: data,
         backgroundColor: 'rgba(54, 162, 235, 0.2)',
         borderColor: 'rgb(54, 162, 235)',
@@ -55,10 +63,13 @@ const createChart = () => {
   });
 };
 
+
 const updateChart = () => {
   if (chart) {
-    chart.data.labels = props.skills.map(skill => skill.skill);
-    chart.data.datasets[0].data = props.skills.map(skill => skill.star);
+    for (let i = 0; i < Object.keys(props.skills).length; i++) {
+      labels.push(props.skills[i].skill)
+      data.push(props.skills[i].star)
+    }
     chart.update();
   }
 };

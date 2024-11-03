@@ -31,7 +31,6 @@ import { getCurrentInstance } from 'vue';
 // Accessing the global variable
 const instance = getCurrentInstance();
 const myGlobalVariable = instance.appContext.config.globalProperties.$globalUrl;
-console.log(myGlobalVariable)
 
 const selectedEmployee = ref(null)
 
@@ -59,7 +58,6 @@ async function fetchSkills() {
                 });
             }
         });
-        console.log(skillsObject, "SASD")
         return skillsObject; // Return the structured object
     } catch (error) {
         console.error('Ошибка при получении данных:', error);
@@ -73,7 +71,6 @@ const clearSelectedEmployee = () => {
 const fetchEmployees = async () => {
     try {
         const response = await axios.get(myGlobalVariable + '/users/');
-        console.log(response.data)
         // Преобразуем данные для соответствия структуре employees
         employees.value = response.data.map(user => ({
             id: user.id,
@@ -93,7 +90,6 @@ const fetchEmployees = async () => {
 const fetchEmployeesCard = async (id) => {
     try {
         const response = await axios.get(myGlobalVariable + '/user/card/' + id + "/");
-        console.log(response.data);
 
         // Преобразуем данные для соответствия структуре employees
         const user = response.data.user_profile; // Извлекаем объект user_profile
@@ -114,9 +110,7 @@ const fetchEmployeesCard = async (id) => {
         console.error('Ошибка при получении сотрудников:', error);
     }
     fetchSkills().then(fetchedSkills => {
-        console.log("ASDASDASDSD2", methodologies.value)
         skills.value = fetchedSkills;
-        console.log("ASDASDASDSD", skills.value)
     });
     console.log("ASAASA", methodologies.value)
 };

@@ -28,7 +28,14 @@ export const AppConfig = () => {
       <AdaptivityProvider>
         <AppRoot mode="full">
           <View activePanel="main_panel">
-            <Panel id="main_panel">
+            <Panel
+              id="main_panel"
+              style={{
+                display: "flex",
+                height: "100vh",
+                flexDirection: "column",
+              }}
+            >
               <PanelHeader>Title here</PanelHeader>
               <QueryClientProvider client={queryClient}>
                 <BrowserRouter>

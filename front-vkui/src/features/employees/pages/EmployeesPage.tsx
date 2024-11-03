@@ -38,6 +38,7 @@ const EmployeesPage = () => {
           maxWidth="560px"
           stretchedOnMobile
           autoSpaced
+          style={{ height: "90%" }}
           className={viewWidth.tabletMinus.className}
         >
           {!employeeId ? (
@@ -54,6 +55,7 @@ const EmployeesPage = () => {
             width={280}
             maxWidth={280}
             className={viewWidth.tabletPlus.className}
+            style={{ height: "80%" }}
           >
             <EmployeeList employees={employeesOrNull} />
           </SplitCol>
@@ -62,6 +64,7 @@ const EmployeesPage = () => {
             maxWidth="560px"
             stretchedOnMobile
             autoSpaced
+            style={{ height: "80%" }}
             className={viewWidth.tabletPlus.className}
           >
             <EmployeeCard employeeOrNull={focusedEmployeeOrNull} />

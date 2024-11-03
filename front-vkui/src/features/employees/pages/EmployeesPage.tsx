@@ -10,7 +10,7 @@ import {
   useAdaptivityConditionalRender,
 } from "@vkontakte/vkui";
 import { EmployeeList } from "@/features/employees/components/EmployeeList.tsx";
-import { EmployeeCard } from "@/features/employees/components/EmployeeCard.tsx";
+import { EmployeeCardLayout } from "@/features/employees/components/EmployeeCardLayout.tsx";
 
 const EmployeesPage = () => {
   const { viewWidth } = useAdaptivityConditionalRender();
@@ -44,7 +44,7 @@ const EmployeesPage = () => {
           {!employeeId ? (
             <EmployeeList employees={employeesOrNull} />
           ) : (
-            <EmployeeCard employeeOrNull={focusedEmployeeOrNull} />
+            <EmployeeCardLayout employeeOrNull={focusedEmployeeOrNull} />
           )}
         </SplitCol>
       )}
@@ -68,7 +68,7 @@ const EmployeesPage = () => {
             style={{ height: "80%" }}
             className={viewWidth.tabletPlus.className}
           >
-            <EmployeeCard employeeOrNull={focusedEmployeeOrNull} />
+            <EmployeeCardLayout employeeOrNull={focusedEmployeeOrNull} />
           </SplitCol>
         </>
       )}

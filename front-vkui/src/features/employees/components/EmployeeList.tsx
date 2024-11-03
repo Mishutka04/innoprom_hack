@@ -1,4 +1,4 @@
-import { Employee } from "@/types/employee";
+import { Employee } from "@/types/types.ts";
 import { Div, Group, Headline } from "@vkontakte/vkui";
 import React from "react";
 import { EmployeeCell } from "@/features/employees/components/EmployeeCell.tsx";

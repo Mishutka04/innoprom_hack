@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { Employee } from "@/types/employee";
+import { Employee } from "@/types/types.ts";
 
 interface EmployeesState {
   selectedEmployee: Employee | null;

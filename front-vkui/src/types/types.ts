@@ -8,14 +8,19 @@ export type Employee = {
   imageUrl: string;
 };
 
+export type Skill = {
+  name: string;
+  rating: number;
+  description: string;
+};
+
 export type EmployeeReport = {
   id: string;
   employeeId: string;
-  period: string;
-  performance: "excellent" | "good" | "average" | "poor";
-  goals: string[];
-  feedback: string;
-  createdAt: string;
+  rating: number;
+  description: string;
+  reviewers: Employee[];
+  skills: Skill[];
 };
 
 export type UserRole = "employee" | "manager" | "hr";

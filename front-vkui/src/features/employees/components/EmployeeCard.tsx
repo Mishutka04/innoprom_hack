@@ -1,70 +1,33 @@
-import { Employee } from "@/types/employee";
+import React from "react";
+import { Employee, EmployeeReport } from "@/types/types.ts";
+import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { employeesApi } from "../api/employeesApi";
+import { employeesApi } from "@/features/employees/api/employeesApi.ts";
 import {
   Button,
   ButtonGroup,
   DisplayTitle,
   Div,
-  Group,
   HorizontalScroll,
-  Image,
   PanelHeaderBack,
-  Placeholder,
   Separator,
+  Spinner,
   Tabs,
   TabsItem,
 } from "@vkontakte/vkui";
-import React from "react";
-import { EmployeeCardBodyText } from "@/features/employees/components/EmployeeCardBodyText.tsx";
-import { EmployeeCardBodyMatrix } from "@/features/employees/components/EmployeeCardBodyMatrix.tsx";
 import baseTheme from "@vkontakte/vkui-tokens/themes/vkBase/cssVars/theme";
-import { useNavigate } from "react-router-dom";
+import { EmployeeCardBodyMatrix } from "@/features/employees/components/EmployeeCardBodyMatrix.tsx";
+import { EmployeeCardBodyText } from "@/features/employees/components/EmployeeCardBodyText.tsx";
 
-interface EmployeeCardProps {
-  employeeOrNull: Employee | undefined;
-}
-
-export const EmployeeCard: React.FC<EmployeeCardProps> = ({
-  employeeOrNull,
+export const EmployeeCard: React.FC<{ employee: Employee }> = ({
+  employee,
 }) => {
-  return (
-    <Group
-      mode="card"
-      style={{
-        minHeight: "100%",
-        display: "flex",
-        justifyContent: "center",
-        alignContent: "center",
-      }}
-    >
-      {employeeOrNull ? (
-        <FilledEmployeeCard employee={employeeOrNull} />
-      ) : (
-        <PlaceholderEmployeeCard />
-      )}
-    </Group>
-  );
-};
-
-const PlaceholderEmployeeCard: React.FC = () => {
-  return (
-    <Placeholder
-      icon={<Image src="src/assets/persik.png" size={96} noBorder />}
-    >
-      Сотрудник еще не выбран
-    </Placeholder>
-  );
-};
-
-const FilledEmployeeCard: React.FC<{ employee: Employee }> = ({ employee }) => {
-  const cardBody: "text" | "matrix" = "text";
   const navigate = useNavigate();
 
   const handleCloseClick = () => {
     navigate("/");
   };
-  const { data: reports } = useQuery({
+  const { data: reportsOrNull, isFetchedAfterMount } = useQuery({
     queryKey: ["employeeReports", employee.id],
     queryFn: () => employeesApi.getEmployeeReports(employee.id),
   });
@@ -99,6 +62,23 @@ const FilledEmployeeCard: React.FC<{ employee: Employee }> = ({ employee }) => {
           Иванов Иван
         </DisplayTitle>
       </div>
+      {isFetchedAfterMount && reportsOrNull?.[0] ? (
+        <CardLoadedContent report={reportsOrNull[0]} employee={employee} />
+      ) : (
+        <Spinner />
+      )}
+    </div>
+  );
+};
+
+const CardLoadedContent: React.FC<{
+  employee: Employee;
+  report: EmployeeReport;
+}> = ({ report, employee }) => {
+  const cardBody: "text" | "matrix" = "text";
+
+  return (
+    <>
       <div
         style={{
           display: "flex",
@@ -122,13 +102,7 @@ const FilledEmployeeCard: React.FC<{ employee: Employee }> = ({ employee }) => {
       <div style={{ flex: 1, width: "100%" }}>
         <Div>
           {cardBody === "text" ? (
-            <EmployeeCardBodyText
-              props={{
-                name: "Иван Иванов",
-                avatarSrc:
-                  "https://sun9-70.userapi.com/c636327/v636327034/2be84/TYzZpZ8BL0k.jpg?ava=1", //TODO
-              }}
-            />
+            <EmployeeCardBodyText employee={employee} report={report} />
           ) : (
             <EmployeeCardBodyMatrix props={{ aaa: "bbb" }} /> //TODO
           )}
@@ -161,6 +135,6 @@ const FilledEmployeeCard: React.FC<{ employee: Employee }> = ({ employee }) => {
           </Button>
         </ButtonGroup>
       </Div>
-    </div>
+    </>
   );
 };

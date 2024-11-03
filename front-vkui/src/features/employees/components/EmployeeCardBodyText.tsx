@@ -14,30 +14,20 @@ import {
 } from "@vkontakte/vkui";
 import { Icon16StarAlt } from "@vkontakte/icons";
 import StarRating from "@/features/employees/components/StarRating.tsx";
-import { Employee, Skill } from "@/types/employee.ts";
+import { Employee, EmployeeReport } from "@/types/types.ts";
 
 interface Props {
-  avatarSrc: string;
-  name: string;
-  position: string;
-  rating: number;
-  description: string;
-  reviewers: Employee[];
-  skills: Skill[];
+  employee: Employee;
+  report: EmployeeReport;
 }
 
 export const EmployeeCardBodyText = ({
-  avatarSrc,
-  name,
-  position,
-  rating,
-  description,
-  reviewers,
-  skills,
+  employee: { name, position, imageUrl: avatarSrc },
+  report: { reviewers, rating, description, skills },
 }: Props) => {
   return (
     <>
-      {/* Employee info header */}
+      {/* Models info header */}
       <div
         style={{
           display: "flex",

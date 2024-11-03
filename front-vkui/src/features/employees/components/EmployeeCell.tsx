@@ -29,7 +29,7 @@ export const EmployeeCell = ({
           level="1"
           style={{ color: baseTheme.colorTextSecondary.normal.value }}
         >
-          {rating}
+          {rating.toFixed(1)}
         </Headline>
       }
       onClick={onClick}

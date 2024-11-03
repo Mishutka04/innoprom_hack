@@ -6,6 +6,7 @@ export type Employee = {
   email: string;
   managerId: string | null;
   imageUrl: string;
+  rating: number;
 };
 
 export type Skill = {
@@ -17,7 +18,6 @@ export type Skill = {
 export type EmployeeReport = {
   id: string;
   employeeId: string;
-  rating: number;
   description: string;
   reviewers: Employee[];
   skills: Skill[];

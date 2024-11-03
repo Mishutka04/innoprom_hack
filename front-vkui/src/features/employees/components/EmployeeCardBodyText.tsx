@@ -22,8 +22,8 @@ interface Props {
 }
 
 export const EmployeeCardBodyText = ({
-  employee: { name, position, imageUrl: avatarSrc },
-  report: { reviewers, rating, description, skills },
+  employee: { name, position, imageUrl: avatarSrc, rating },
+  report: { reviewers, description, skills },
 }: Props) => {
   return (
     <>
@@ -63,7 +63,7 @@ export const EmployeeCardBodyText = ({
           }
           style={{ padding: 0, alignSelf: "flex-start" }}
         >
-          {rating}
+          {rating.toFixed(1)}
         </Header>
       </div>
 

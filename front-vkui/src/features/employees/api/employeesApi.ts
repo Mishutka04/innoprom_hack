@@ -9,6 +9,7 @@ const dummyEmployees: Employee[] = [
     department: "Engineering",
     email: "john.doe@company.com",
     managerId: "2",
+    rating: 4.1,
     imageUrl:
       "https://sun9-70.userapi.com/c636327/v636327034/2be84/TYzZpZ8BL0k.jpg?ava=1",
   },
@@ -19,6 +20,7 @@ const dummyEmployees: Employee[] = [
     department: "Engineering",
     email: "jane.smith@company.com",
     managerId: null,
+    rating: 3,
     imageUrl:
       "https://sun9-70.userapi.com/c636327/v636327034/2be84/TYzZpZ8BL0k.jpg?ava=1",
   },
@@ -29,6 +31,7 @@ const dummyEmployees: Employee[] = [
     department: "Design",
     email: "bob.johnson@company.com",
     managerId: "2",
+    rating: 5.0,
     imageUrl:
       "https://sun9-70.userapi.com/c636327/v636327034/2be84/TYzZpZ8BL0k.jpg?ava=1",
   },
@@ -39,6 +42,7 @@ const dummyEmployees: Employee[] = [
     department: "Design",
     email: "ann.smith@company.com",
     managerId: "2",
+    rating: 4.2,
     imageUrl:
       "https://sun9-70.userapi.com/c636327/v636327034/2be84/TYzZpZ8BL0k.jpg?ava=1",
   },
@@ -80,7 +84,6 @@ const dummyReports: Record<string, EmployeeReport[]> = {
     {
       id: "r1",
       employeeId: "1",
-      rating: 4.1,
       description:
         "Звезда нашего детского сада. Он всегда улыбается и готов порадовать окружающих своим обаянием! " +
         "Его позитивный настрой и дружелюбие делают группу более сплоченной. " +

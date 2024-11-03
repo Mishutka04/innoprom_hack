@@ -45,7 +45,7 @@ export const EmployeeList: React.FC<EmployeeListProps> = ({ employees }) => {
                   avatarSrc={employee.imageUrl}
                   mode={mode}
                   name={employee.name}
-                  rating={4.7}
+                  rating={employee.rating}
                   position={employee.position}
                   onClick={() => handleUserClick(employee.id)}
                 />

@@ -70,9 +70,14 @@ import axios from 'axios';
 const route = useRoute();
 const userId = route.params.id; // Получаем ID из URL
 const user = ref();
+import { getCurrentInstance } from 'vue';
+
+// Accessing the global variable
+const instance = getCurrentInstance();
+const myGlobalVariable = instance.appContext.config.globalProperties.$globalUrl;
 const fetchUserAndEmployees = async () => {
   try {
-    const response = await axios.get(this.$globalUrl + '/user/' + userId + "/");
+    const response = await axios.get(myGlobalVariable + '/user/' + userId + "/");
     if (response.data && response.data.length) {
       user.value = response.data[0]
       console.log(response.data[0])

@@ -26,6 +26,13 @@ import axios from 'axios';
 import Header from './Header.vue';
 import LeftSlideBar from './LeftSlideBar.vue';
 import RightContent from './RightContent.vue';
+import { getCurrentInstance } from 'vue';
+
+// Accessing the global variable
+const instance = getCurrentInstance();
+const myGlobalVariable = instance.appContext.config.globalProperties.$globalUrl;
+console.log(myGlobalVariable)
+
 const selectedEmployee = ref(null)
 
 const methodologies = ref()
@@ -65,7 +72,7 @@ const clearSelectedEmployee = () => {
 // Функция для получения сотрудников из API
 const fetchEmployees = async () => {
     try {
-        const response = await axios.get(this.$globalUrl + '/users/');
+        const response = await axios.get(myGlobalVariable + '/users/');
         console.log(response.data)
         // Преобразуем данные для соответствия структуре employees
         employees.value = response.data.map(user => ({
@@ -85,7 +92,7 @@ const fetchEmployees = async () => {
 // Функция для получения сотрудников из API
 const fetchEmployeesCard = async (id) => {
     try {
-        const response = await axios.get(this.$globalUrl + '/user/card/' + id + "/");
+        const response = await axios.get(myGlobalVariable + '/user/card/' + id + "/");
         console.log(response.data);
 
         // Преобразуем данные для соответствия структуре employees

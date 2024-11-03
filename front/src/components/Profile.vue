@@ -149,9 +149,15 @@ const clearSelectedEmployee = () => {
 };
 // Функция для получения сотрудников из API
 // Функция для получения сотрудников из API
+import { getCurrentInstance } from 'vue';
+
+// Accessing the global variable
+const instance = getCurrentInstance();
+const myGlobalVariable = instance.appContext.config.globalProperties.$globalUrl;
+
 const fetchEmployeesCard = async () => {
   try {
-    const response = await axios.get(this.$globalUrl + '/user/card/' + userId + "/");
+    const response = await axios.get(myGlobalVariable + '/user/card/' + userId + "/");
     console.log(response.data);
 
     // Преобразуем данные для соответствия структуре employees

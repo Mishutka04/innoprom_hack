@@ -14,12 +14,8 @@
             <p class="profile-position">{{ selectedEmployee.position }}</p>
           </div>
           <div class="profile-actions">
-            <button class="btn-primary">
-              Скачать CSV
-            </button>
-            <button class="btn-primary">
-              Скачать PDF
-            </button>
+            <ButtonCSV/>
+            <ButtonPdf/>
           </div>
         </div>
 
@@ -104,6 +100,8 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
+import ButtonCSV from './ButtonCSV.vue'
+import ButtonPdf from './ButtonPdf.vue'
 import axios from 'axios';
 import Chart from 'chart.js/auto'
 import Header from './Header.vue'

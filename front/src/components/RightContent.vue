@@ -67,8 +67,8 @@
                     <div v-else>Для более подробной информации запустите процесс анализа отзывов</div>
 
                     <div class="download-buttons">
-                        <button class="download-button">Скачать PDF</button>
-                        <button class="download-button">Скачать CSV</button>
+                        <ButtonCSV />
+                        <ButtonPdf />
                     </div>
                 </div>
                 <template v-else>
@@ -94,6 +94,8 @@
 import { ref } from 'vue'
 import CompetencyRadarChart from './CompetencyRadarChart.vue';
 import { defineEmits } from 'vue';
+import ButtonCSV from './ButtonCSV.vue'
+import ButtonPdf from './ButtonPdf.vue'
 const emit = defineEmits(['clearSelectedEmployee']);
 
 const activeTab = ref('text');

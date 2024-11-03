@@ -14,6 +14,7 @@ import {
   UsersStack,
 } from "@vkontakte/vkui";
 import { Icon16StarAlt } from "@vkontakte/icons";
+import StarRating from "@/features/employees/components/StarRating.tsx";
 
 interface Props {
   avatarSrc: string;
@@ -107,15 +108,15 @@ export const CardBodyText = ({
       </Div>
 
       <Spacing size={8} />
-      <Separator style={{ width: "100%" }} />
-      <Spacing size={8} />
+      <Separator mode="secondary" style={{ width: "100%" }} />
+      <Spacing size={16} />
 
       {/* Skill Cards */}
       <CardGrid size="l">
         {[
           {
             skill: "Командная работа",
-            stars: 4,
+            rating: 5,
             description:
               "Всегда готов прийти на помощь своему другу Пете. " +
               "Он отлично умеет делиться игрушками и не ругается, когда кто-то берет его машинку на время. В" +
@@ -124,7 +125,7 @@ export const CardBodyText = ({
           },
           {
             skill: "Творческие навыки",
-            stars: 4,
+            rating: 4,
             description:
               "Он всегда рисует яркие рисунки на занятиях и не забывает рассказывать всем " +
               "смешные истории о своих персонажах. Ни одно утро в детском саду не " +
@@ -132,7 +133,7 @@ export const CardBodyText = ({
           },
           {
             skill: "Управляемость",
-            stars: 4,
+            rating: 3,
             description:
               "Очень хорошо делает задачи с коллегами и руководителями, " +
               "всегда готов помочь и поддержать. Слушает маму и папу, " +
@@ -152,7 +153,7 @@ export const CardBodyText = ({
                   <Headline level="1" weight={"1"} style={{ marginBottom: 2 }}>
                     {x.skill}
                   </Headline>
-                  <div>rating here</div>
+                  <StarRating rating={x.rating} />
                 </div>
                 <Paragraph>{x.description}</Paragraph>
               </Div>

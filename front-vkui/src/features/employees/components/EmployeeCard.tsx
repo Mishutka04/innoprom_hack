@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Employee, EmployeeReport } from "@/types/types.ts";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
@@ -75,7 +75,7 @@ const CardLoadedContent: React.FC<{
   employee: Employee;
   report: EmployeeReport;
 }> = ({ report, employee }) => {
-  const cardBody: "text" | "matrix" = "text";
+  const [cardBody, setCardBody] = useState<"text" | "matrix">("text");
 
   return (
     <>
@@ -88,10 +88,16 @@ const CardLoadedContent: React.FC<{
       >
         <HorizontalScroll>
           <Tabs style={{ width: "100%" }}>
-            <TabsItem onClick={() => {}} selected={true}>
+            <TabsItem
+              onClick={() => setCardBody("text")}
+              selected={cardBody === "text"}
+            >
               Текстовое представление
             </TabsItem>
-            <TabsItem onClick={() => {}} selected={false}>
+            <TabsItem
+              onClick={() => setCardBody("matrix")}
+              selected={cardBody === "matrix"}
+            >
               Матрица компетенций
             </TabsItem>
           </Tabs>

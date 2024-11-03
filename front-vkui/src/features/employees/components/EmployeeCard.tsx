@@ -18,6 +18,8 @@ import {
 import React from "react";
 import { CardBodyText } from "@/features/employees/components/CardBodyText.tsx";
 import { CardBodyMatrix } from "@/features/employees/components/CardBodyMatrix.tsx";
+import baseTheme from "@vkontakte/vkui-tokens/themes/vkBase/cssVars/theme";
+import { useNavigate } from "react-router-dom";
 
 interface EmployeeCardProps {
   employeeOrNull: Employee | undefined;
@@ -57,7 +59,11 @@ const PlaceholderEmployeeCard: React.FC = () => {
 
 const FilledEmployeeCard: React.FC<{ employee: Employee }> = ({ employee }) => {
   const cardBody: "text" | "matrix" = "text";
+  const navigate = useNavigate();
 
+  const handleCloseClick = () => {
+    navigate(-1);
+  };
   const { data: reports } = useQuery({
     queryKey: ["employeeReports", employee.id],
     queryFn: () => employeesApi.getEmployeeReports(employee.id),
@@ -86,9 +92,8 @@ const FilledEmployeeCard: React.FC<{ employee: Employee }> = ({ employee }) => {
         }}
       >
         <PanelHeaderBack
-          onClick={() => {
-            console.log();
-          }}
+          style={{ color: baseTheme.colorIconAccent.normal.value }}
+          onClick={() => handleCloseClick()}
         />
         <DisplayTitle level="3" weight="3">
           Иванов Иван

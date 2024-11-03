@@ -5,7 +5,7 @@ export type Employee = {
   department: string;
   email: string;
   managerId: string | null;
-  imageUrl?: string;
+  imageUrl: string;
 };
 
 export type EmployeeReport = {

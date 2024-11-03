@@ -9,7 +9,8 @@ const dummyEmployees: Employee[] = [
     department: "Engineering",
     email: "john.doe@company.com",
     managerId: "2",
-    imageUrl: "/api/placeholder/32/32",
+    imageUrl:
+      "https://sun9-70.userapi.com/c636327/v636327034/2be84/TYzZpZ8BL0k.jpg?ava=1",
   },
   {
     id: "2",
@@ -18,7 +19,8 @@ const dummyEmployees: Employee[] = [
     department: "Engineering",
     email: "jane.smith@company.com",
     managerId: null,
-    imageUrl: "/api/placeholder/32/32",
+    imageUrl:
+      "https://sun9-70.userapi.com/c636327/v636327034/2be84/TYzZpZ8BL0k.jpg?ava=1",
   },
 ];
 

@@ -52,16 +52,17 @@ const EmployeesPage = () => {
       {viewWidth.tabletPlus && (
         <>
           <SplitCol
-            width={280}
-            maxWidth={280}
+            maxWidth={"30vw"}
             className={viewWidth.tabletPlus.className}
-            style={{ height: "80%" }}
+            style={{
+              height: "80%",
+              marginLeft:
+                "var(--vkui--size_split_col_padding_horizontal--regular)",
+            }}
           >
             <EmployeeList employees={employeesOrNull} />
           </SplitCol>
           <SplitCol
-            width="100%"
-            maxWidth="560px"
             stretchedOnMobile
             autoSpaced
             style={{ height: "80%" }}

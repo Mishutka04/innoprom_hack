@@ -30,9 +30,10 @@ ScoreWorker — система метрик сотрудников на осно
 4. Расчёт итоговой оценки
 
 ## Пример работы
-
-[Ссылка на видео](https://www.youtube.com/watch?v=XXX)
 [Live](https://innoprom-hack-1.onrender.com/)
+
+![Ссылка на видео](./presentation/main.webm)
+![Ссылка на видео](./presentation/form.webm)
 
 ## Установка и запуск
 
@@ -48,7 +49,7 @@ ScoreWorker — система метрик сотрудников на осно
    ```
 
 3. Фронтенд: http://localhost:5173
-4. Бэкенд: http://localhost:8000
+4. Бэкенд: http://localhost:8080
 
 ## Дальнейшее развитие
 

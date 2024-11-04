@@ -1,38 +1,28 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
+from starlette.middleware.cors import CORSMiddleware
 
-from models.models import QuestionWithAnswersAggregate
-from services.reviews_service import calculate_reviews_from_answers, get_users_with_rating
+from models.models import QuestionWithAnswersAggregate, Answer
+from services.answers_repository import save_answers, load_answers_aggregate_for_user
+from services.reviews_service import (
+    calculate_reviews_from_answers,
+    get_users_with_rating,
+)
 
 app = FastAPI()
+
+# Configure CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # In production, replace with specific origins
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.get("/test")
 async def test():
-    answers = [
-        QuestionWithAnswersAggregate(
-            question="Этот сотрудник умеет работать в команде?",
-            answers=[
-                "Да, он очень хорошо взаимодействует с коллегами и способен эффективно сотрудничать в команде.",
-                "Да, но иногда бывают проблемы",
-            ],
-        ),
-        QuestionWithAnswersAggregate(
-            question="Этот сотрудник имеет опыт работы в данной области?",
-            answers=[
-                "Да, он работал в этой области более 5 лет.",
-                "Да, но только 2 года",
-            ],
-        ),
-        QuestionWithAnswersAggregate(
-            question="Этот сотрудник имеет лидерские навыки?",
-            answers=[
-                "Да, он умеет мотивировать команду и принимать решения.",
-                "Нет, он не имеет опыта руководства командой.",
-            ],
-        ),
-    ]
-
-    return calculate_reviews_from_answers(answers, 123)
+    return load_answers_aggregate_for_user(1)
 
 
 @app.get("/calculateAllReviews")
@@ -43,3 +33,17 @@ async def calculate_all_reviews():
 @app.get("/users")
 async def get_users():
     return get_users_with_rating()
+
+
+@app.post("/answers")
+async def post_answers(
+    answers: list[Answer],
+) -> dict:
+    save_answers(answers)
+    try:
+        return {"message": "Answers saved successfully", "count": len(answers)}
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to save answers: {str(e)}"
+        )

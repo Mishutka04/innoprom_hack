@@ -24,3 +24,13 @@ class DBReview(Base):
     average = Column(Float)
 
     criterias = relationship("DBCriteria", back_populates="review")
+
+
+class DBAnswer(Base):
+    __tablename__ = "answers"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_answered = Column(Integer, index=True)
+    user_reviewed = Column(Integer, index=True)
+    answer_text = Column(String)
+    question_text = Column(String, index=True)

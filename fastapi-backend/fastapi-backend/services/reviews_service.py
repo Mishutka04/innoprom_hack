@@ -44,6 +44,7 @@ class UserWithRating(BaseModel):
     name: str
     role: str
     department: str
+    avatar_url: str
 
 
 def get_users_with_rating() -> list[UserWithRating]:

@@ -14,8 +14,8 @@
             <p class="profile-position">{{ selectedEmployee.position }}</p>
           </div>
           <div class="profile-actions">
-            <ButtonCSV @click="exportToPDF" />
-            <ButtonPdf />
+            <ButtonCSV  />
+            <ButtonPdf :block="pageContainer"/>
           </div>
         </div>
 

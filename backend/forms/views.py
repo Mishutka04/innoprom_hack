@@ -4,8 +4,8 @@ from django.http import JsonResponse
 from rest_framework import generics
 from rest_framework.views import APIView
 from .utils import evaluate_reviews_with_llm, prepare_prompt
-from .models import UserProfile, Methodology, StatusMethodology, FormAnswer, ResultMethodology, UserCard
-from .serializers import UserProfileSerializer, MethodologySerializer, StatusMethodologySerializer, FormAnswerSerializer, ResultMethodologySerializer, UserCardSerializer
+from .models import NeedAnswer, UserProfile, Methodology, StatusMethodology, FormAnswer, ResultMethodology, UserCard
+from .serializers import NeedAnswerSerializer, NeedAnswerSerializer2, UserProfileSerializer, MethodologySerializer, StatusMethodologySerializer, FormAnswerSerializer, ResultMethodologySerializer, UserCardSerializer
 from rest_framework.response import Response
 
 class CombinedUserProfileMethodologyView(generics.GenericAPIView):
@@ -64,6 +64,26 @@ class FormAnswerListCreateView(generics.ListCreateAPIView):
 class ResultMethodologyListCreateView(generics.ListCreateAPIView):
     queryset = ResultMethodology.objects.all()
     serializer_class = ResultMethodologySerializer
+    
+class NeedAnswerListCreateView2(generics.ListCreateAPIView):
+    queryset = ResultMethodology.objects.all()
+    serializer_class = NeedAnswerSerializer2
+
+class NeedAnswerListCreateView(generics.ListCreateAPIView):
+    serializer_class = NeedAnswerSerializer
+    
+    def get_queryset(self):
+        pk = self.kwargs.get('pk')  # Получаем значение pk из URL
+        metodology = self.kwargs.get('metodology')  # Получаем значение pk из URL
+        if pk is not None and metodology is not None:
+            return NeedAnswer.objects.filter(user_given__pk=pk,methodology__pk = metodology, status=False)  # Возвращаем методологии с указанным pk
+        return NeedAnswer.objects.all()  # Если pk не указан, возвращаем все методологии
+
+
+
+        
+        
+        
 
 
 class EvaluateReviewsView(APIView):

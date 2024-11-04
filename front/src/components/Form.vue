@@ -25,7 +25,7 @@
         <select v-model="selectedEmployee" id="employee" class="form-select">
           <option value="">Выберите сотрудника</option>
           <option v-for="emp in employees" :key="emp.id" :value="emp.id">
-            {{ emp.name }}
+            {{ emp.full_name }}
           </option>
         </select>
       </div>
@@ -68,7 +68,8 @@ import Header from './Header.vue';
 import { useRoute } from 'vue-router';
 import axios from 'axios';
 const route = useRoute();
-const userId = route.params.id; // Получаем ID из URL
+const user_given_id = route.params.user_given_id; // Получаем ID из URL
+const methodology_id = route.params.methodology_id; // Получаем ID из URL
 const user = ref();
 import { getCurrentInstance } from 'vue';
 
@@ -77,11 +78,17 @@ const instance = getCurrentInstance();
 const myGlobalVariable = instance.appContext.config.globalProperties.$globalUrl;
 const fetchUserAndEmployees = async () => {
   try {
-    const response = await axios.get(myGlobalVariable + '/user/' + userId + "/");
+    const response = await axios.get(myGlobalVariable + '/user/' + user_given_id + "/");
     if (response.data && response.data.length) {
       user.value = response.data[0]
       console.log(response.data[0])
     }
+    const response_ = await axios.get(myGlobalVariable + '/users');
+    if (response_.data && response_.data.length) {
+      employees.value = response_.data
+      console.log(employees.value)
+    }
+    // http://127.0.0.1:8000/api/form/users/1/1/
 
     // Преобразуем данные для соответствия структуре employees
     // employees.value = response.data.map(user => ({
@@ -107,11 +114,7 @@ const currentUser = {
   role: 'Frontend Developer'
 }
 
-const employees = [
-  { id: 1, name: 'Петров Иван Васильевич' },
-  { id: 2, name: 'Сидорова Анна Михайловна' },
-  { id: 3, name: 'Козлов Дмитрий Александрович' }
-]
+const employees = ref();
 
 // Reactive state
 const selectedEmployee = ref('')
@@ -124,13 +127,9 @@ const canSubmit = computed(() => {
 })
 
 // Methods
-const submitFeedback = () => {
+const submitFeedback = async () => {
   if (canSubmit.value) {
-    // Here you would typically make an API call
-    console.log('Feedback submitted:', {
-      employeeId: selectedEmployee.value,
-      feedback: feedback.value
-    })
+    const response = await axios.post(myGlobalVariable + '/form/answer/', {user_given: user_given_id, user_accept:selectedEmployee.value ,methodology: methodology_id, answers: {answer:feedback.value}});
     showModal.value = true
   }
 }

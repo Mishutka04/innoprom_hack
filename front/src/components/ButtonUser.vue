@@ -1,10 +1,22 @@
 <template>
-    <button class="btn-primary">
+    <button class="btn-primary" @click="cd">
         Подробнее
     </button>
 </template>
-<script>
-
+<script setup>
+import { defineProps } from 'vue'
+import { useRouter } from "vue-router";
+const router = useRouter();
+function cd() {
+    router.push('/profile/' + props.id)
+}
+const props = defineProps({
+    data_id: {
+        type: Number,
+        required: true
+    },
+});
+console.log(props)
 </script>
 <style>
 .btn-primary {

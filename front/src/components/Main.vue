@@ -575,8 +575,8 @@ onMounted(fetchEmployees);
   }
   
   .placeholder-icon img {
-    width: 64px;
-    height: 64px;
+    width: 128px;
+    height: 168px;
     margin-bottom: 16px;
   }
   

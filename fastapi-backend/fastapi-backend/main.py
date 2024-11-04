@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 
 from models.models import QuestionWithAnswersAggregate
-from services.reviews_service import calculate_reviews_from_answers
+from services.reviews_service import calculate_reviews_from_answers, get_users_with_rating
 
 app = FastAPI()
 
@@ -42,4 +42,4 @@ async def calculate_all_reviews():
 
 @app.get("/users")
 async def get_users():
-    pass
+    return get_users_with_rating()

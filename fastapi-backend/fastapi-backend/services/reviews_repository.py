@@ -7,6 +7,9 @@ from models.models import (
 )
 from models.db_models import DBReview, DBCriteria
 
+# Create all tables
+Base.metadata.create_all(bind=engine)
+
 
 def save_reviews(reviews: CalculatedUserReviews) -> None:
     db = next(get_db())

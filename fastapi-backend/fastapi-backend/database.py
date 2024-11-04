@@ -12,10 +12,8 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 Base = declarative_base()
 
-# Create all tables
-Base.metadata.create_all(bind=engine)
 
-
+# Dependency to get DB session
 def get_db():
     db = SessionLocal()
     try:

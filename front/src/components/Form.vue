@@ -81,12 +81,11 @@ const fetchUserAndEmployees = async () => {
     const response = await axios.get(myGlobalVariable + '/user/' + user_given_id + "/");
     if (response.data && response.data.length) {
       user.value = response.data[0]
-      console.log(response.data[0])
     }
     const response_ = await axios.get(myGlobalVariable + '/users');
     if (response_.data && response_.data.length) {
       employees.value = response_.data
-      console.log(employees.value)
+ 
     }
     // http://127.0.0.1:8000/api/form/users/1/1/
 
@@ -129,7 +128,6 @@ const canSubmit = computed(() => {
 // Methods
 const submitFeedback = async () => {
   if (canSubmit.value) {
-    console.log({user_given: user_given_id, user_accept:String(selectedEmployee.value) ,methodology: methodology_id, answers: {answer:feedback.value}})
     const response = await axios.post(myGlobalVariable + '/form/answer/', {user_given: user_given_id, user_accept:String(selectedEmployee.value) ,methodology: methodology_id, answers: {"answer":feedback.value}});
     showModal.value = true
   }

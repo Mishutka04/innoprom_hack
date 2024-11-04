@@ -252,6 +252,7 @@ onMounted(fetchEmployees);
     border-radius: 8px;
     background-color: #f2f3f5;
     font-size: 14px;
+    width: 100%;
   }
   
   .gender-filter {

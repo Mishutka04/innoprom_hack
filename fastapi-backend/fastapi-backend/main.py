@@ -6,7 +6,7 @@ from services.ai_service import (
     prepare_summary_prompt,
     get_ai_summary,
 )
-from services.models import QuestionWithAnswers
+from services.models import QuestionWithAnswersAggregate
 from services.reviews_service import calculate_reviews_from_answers
 
 app = FastAPI()
@@ -15,21 +15,21 @@ app = FastAPI()
 @app.get("/test")
 async def test():
     answers = [
-        QuestionWithAnswers(
+        QuestionWithAnswersAggregate(
             question="Этот сотрудник умеет работать в команде?",
             answers=[
                 "Да, он очень хорошо взаимодействует с коллегами и способен эффективно сотрудничать в команде.",
                 "Да, но иногда бывают проблемы",
             ],
         ),
-        QuestionWithAnswers(
+        QuestionWithAnswersAggregate(
             question="Этот сотрудник имеет опыт работы в данной области?",
             answers=[
                 "Да, он работал в этой области более 5 лет.",
                 "Да, но только 2 года",
             ],
         ),
-        QuestionWithAnswers(
+        QuestionWithAnswersAggregate(
             question="Этот сотрудник имеет лидерские навыки?",
             answers=[
                 "Да, он умеет мотивировать команду и принимать решения.",

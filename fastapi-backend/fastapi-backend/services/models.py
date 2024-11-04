@@ -24,6 +24,20 @@ class CalculatedUserReviews(BaseModel):
     review: CalculatedUserReview
 
 
-class QuestionWithAnswers(BaseModel):
+class Answer(BaseModel):
+    user_answered: int
+    user_reviewed: int
+    answer_text: str
+    question_text: str
+
+
+class User(BaseModel):
+    id: int
+    name: str
+    role: str
+    department: str
+
+
+class QuestionWithAnswersAggregate(BaseModel):
     question: str
     answers: list[str]

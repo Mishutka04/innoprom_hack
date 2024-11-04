@@ -3,11 +3,11 @@ import json
 import requests
 from pydantic import BaseModel
 
-from services.models import QuestionWithAnswers, CalculatedCriteria
+from services.models import QuestionWithAnswersAggregate, CalculatedCriteria
 
 
 def prepare_criterias_prompt(
-    question_with_answers: list[QuestionWithAnswers], criteria_names: list[str]
+    question_with_answers: list[QuestionWithAnswersAggregate], criteria_names: list[str]
 ) -> str:
     answers_section = "\n\n".join(
         (f"Question {i}: {qna.question}\n" + "\n".join([f"- {a}" for a in qna.answers]))

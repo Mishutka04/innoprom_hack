@@ -7,7 +7,7 @@ from services.ai_service import (
 )
 from services.models import (
     CalculatedUserReviews,
-    QuestionWithAnswers,
+    QuestionWithAnswersAggregate,
     CalculatedUserReview,
 )
 
@@ -23,7 +23,7 @@ def get_reviews(user_id: int) -> CalculatedUserReviews:
 
 
 def calculate_reviews_from_answers(
-    answers: list[QuestionWithAnswers], user_id: int
+    answers: list[QuestionWithAnswersAggregate], user_id: int
 ) -> CalculatedUserReviews | str:
     criterias_prompt = prepare_criterias_prompt(answers, _criteria_names)
     criterias_response = get_ai_criterias(criterias_prompt)

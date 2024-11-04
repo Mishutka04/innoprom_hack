@@ -20,11 +20,11 @@ def prepare_criterias_prompt(
 
     return "\n\n".join(
         [
-            "Here are some reviews about an employee:",
+            "Вот несколько отзывов о сотруднике:",
             answers_section,
-            "Based on these reviews, evaluate the employee on a scale from 1 to 5 for the following criteria:",
+            "На основании отзывов, оцени сотрудника по шкале 1 to 5 по следующим критериям",
             criterias_section,
-            "Add short (2 sentences) explanation for each score you assigned.",
+            "Добавь короткое (4 предложения) объяснение, почему ты дал пользователю такую оценку",
         ]
     )
 
@@ -65,7 +65,7 @@ def _get_ai_response(prompt: str, schema: dict, system_prompt: str) -> dict | st
 
     try:
         response = requests.post(
-            _ai_endpoints[1] + "/generate",
+            _ai_endpoints[0] + "/generate",
             data=json.dumps(body, ensure_ascii=False).encode("utf-8"),
             headers=headers,
         )
@@ -96,7 +96,7 @@ def get_ai_criterias(prompt: str) -> CriteriasResponse | str:
                         "comment": {"type": "string"},
                         "rating": {"type": "integer"},
                     },
-                    "required": ["criteria_name", "comment", "rating"],
+                    "required": ["criteria_name", "summary", "rating"],
                 },
             }
         },
@@ -105,7 +105,11 @@ def get_ai_criterias(prompt: str) -> CriteriasResponse | str:
     system_prompt = (
         "You are a helpful assistant. Ответ на русском. "
         "По каждому критерию запиши в properties данные. "
-        "Criteria - название критерия, comment - комментарий, star - Оценка от 1 - до 5."
+        "criteria_name - название навыка, который оценивается, "
+        "comment - словесное резюме навыков пользователя , rating - Оценка от 1 - до 5."
+        "Пример: 1. {criteria_name: 'Коммуникативные навыки', comment: "
+        "'На основании отзывов видно, что сотрудник демонстрирует умение эффективно общаться "
+        "и сотрудничать с коллегами. Однако некоторые отзывы указывают на то, что он долго отвечает на сообщения', rating: 4}"
     )
 
     response = _get_ai_response(prompt, response_schema, system_prompt)

@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from pydantic import BaseModel
 
 from services.ai_service import (
     prepare_criterias_prompt,
@@ -43,4 +44,9 @@ async def test():
 
 @app.get("/calculateAllReviews")
 async def calculate_all_reviews():
+    pass
+
+
+@app.get("/users")
+async def get_users():
     pass

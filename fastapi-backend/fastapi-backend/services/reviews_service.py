@@ -1,6 +1,7 @@
+from pydantic import BaseModel
+
 from services.ai_service import (
     prepare_criterias_prompt,
-    _get_ai_response,
     get_ai_criterias,
     prepare_summary_prompt,
     get_ai_summary,
@@ -12,14 +13,6 @@ from services.models import (
 )
 
 _criteria_names = ["Hard skills", "Коммуникация", "Лидерские навыки"]
-
-
-def save_reviews(reviews: CalculatedUserReviews) -> None:
-    pass
-
-
-def get_reviews(user_id: int) -> CalculatedUserReviews:
-    pass
 
 
 def calculate_reviews_from_answers(
@@ -41,3 +34,15 @@ def calculate_reviews_from_answers(
         user_id=user_id,
         review=CalculatedUserReview(criterias=calculated_criterias, summary=summary),
     )
+
+
+class UserWithRating(BaseModel):
+    rating: int
+    id: int
+    name: str
+    role: str
+    department: str
+
+
+def get_users_with_rating() -> list[UserWithRating]:
+    pass

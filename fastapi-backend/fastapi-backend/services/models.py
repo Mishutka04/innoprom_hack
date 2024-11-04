@@ -36,6 +36,7 @@ class User(BaseModel):
     name: str
     role: str
     department: str
+    avatar_url: str
 
 
 class QuestionWithAnswersAggregate(BaseModel):

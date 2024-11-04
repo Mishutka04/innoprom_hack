@@ -1,7 +1,13 @@
 from fastapi import FastAPI
 
-from services.ai_service import prepare_criterias_prompt, get_ai_criterias
+from services.ai_service import (
+    prepare_criterias_prompt,
+    get_ai_criterias,
+    prepare_summary_prompt,
+    get_ai_summary,
+)
 from services.models import QuestionWithAnswers
+from services.reviews_service import calculate_reviews_from_answers
 
 app = FastAPI()
 
@@ -29,17 +35,10 @@ async def test():
                 "Да, он умеет мотивировать команду и принимать решения.",
                 "Нет, он не имеет опыта руководства командой.",
             ],
-        )
+        ),
     ]
 
-    criterias_prompt = prepare_criterias_prompt(
-        answers, ["Hard skills", "Коммуникация", "Лидерские навыки"]
-    )
-    criterias_response = get_ai_criterias(criterias_prompt)
-    if criterias_response is str:
-        return criterias_response
-    calculated_criterias = criterias_response.criterias
-    return calculated_criterias
+    return calculate_reviews_from_answers(answers, 123)
 
 
 @app.get("/calculateAllReviews")

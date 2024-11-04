@@ -31,7 +31,7 @@ def prepare_criterias_prompt(
 
 def prepare_summary_prompt(criterias: list[CalculatedCriteria]) -> str:
     criterias_section = "\n".join(
-        f"- {c.name}: {c.score} ({c.explanation})" for c in criterias
+        f"- {c.criteria_name}: {c.rating} ({c.comment})" for c in criterias
     )
 
     return "\n\n".join(
@@ -65,7 +65,7 @@ def _get_ai_response(prompt: str, schema: dict, system_prompt: str) -> dict | st
 
     try:
         response = requests.post(
-            _ai_endpoints[0] + "/generate",
+            _ai_endpoints[1] + "/generate",
             data=json.dumps(body, ensure_ascii=False).encode("utf-8"),
             headers=headers,
         )

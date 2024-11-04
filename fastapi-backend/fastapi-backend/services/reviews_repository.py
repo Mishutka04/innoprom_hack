@@ -11,7 +11,7 @@ from models.db_models import DBReview, DBCriteria
 Base.metadata.create_all(bind=engine)
 
 
-def save_reviews(reviews: CalculatedUserReviews) -> None:
+def save_user_reviews(reviews: CalculatedUserReviews) -> None:
     db = next(get_db())
 
     # Create DBReview

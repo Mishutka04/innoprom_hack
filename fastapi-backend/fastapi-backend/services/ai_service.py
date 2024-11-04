@@ -70,7 +70,7 @@ def _get_ai_response(prompt: str, schema: dict, system_prompt: str) -> dict | st
             headers=headers,
         )
 
-        print(response)
+        print(f"AI response: {response}")
         response.raise_for_status()
         return json.loads(response.json())
 

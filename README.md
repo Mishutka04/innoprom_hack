@@ -32,8 +32,8 @@ ScoreWorker — система метрик сотрудников на осно
 ## Пример работы
 [Live](https://innoprom-hack-1.onrender.com/)
 
-![Ссылка на видео](./presentation/main.webm)
-![Ссылка на видео](./presentation/form.webm)
+![Ссылка на видео](./presentation/main.gif)
+![Ссылка на видео](./presentation/form.gif)
 
 ## Установка и запуск
 

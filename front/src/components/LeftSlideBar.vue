@@ -16,7 +16,10 @@
                 <div class="dropdown-container">
                     <select class="dropdown" v-model="selectedPosition">
                         <option value="">Должность</option>
-                        <option value="backend">Backend Developer</option>
+                        <option value="Backend">Backend Developer</option>
+                        <option value="Front-End">Front-end Developer</option>
+                        <option value="Full-Stack">Full-Stack Developer</option>
+                        <option value="Team-Lead">Team-Lead</option>
                     </select>
 
                     <select class="dropdown" v-model="selectedDepartment">

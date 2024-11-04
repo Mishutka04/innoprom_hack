@@ -129,7 +129,8 @@ const canSubmit = computed(() => {
 // Methods
 const submitFeedback = async () => {
   if (canSubmit.value) {
-    const response = await axios.post(myGlobalVariable + '/form/answer/', {user_given: user_given_id, user_accept:selectedEmployee.value ,methodology: methodology_id, answers: {answer:feedback.value}});
+    console.log({user_given: user_given_id, user_accept:String(selectedEmployee.value) ,methodology: methodology_id, answers: {answer:feedback.value}})
+    const response = await axios.post(myGlobalVariable + '/form/answer/', {user_given: user_given_id, user_accept:String(selectedEmployee.value) ,methodology: methodology_id, answers: {"answer":feedback.value}});
     showModal.value = true
   }
 }

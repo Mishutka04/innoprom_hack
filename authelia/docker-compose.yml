@@ -1,0 +1,43 @@
+services:
+
+  authelia:
+    image: authelia/authelia:latest
+    restart: unless-stopped
+    container_name: authelia-container
+    depends_on:
+      - authelia-postgres
+      - authelia-redis
+    environment:
+      - X_AUTHELIA_CONFIG_FILTERS=template
+    volumes:
+      - ./config:/config
+    env_file:
+      - .env
+
+  authelia-postgres:
+    image: postgres:15
+    restart: unless-stopped
+    container_name: authelia-postgres-container
+    expose:
+      - 5432
+    volumes:
+      - ./db:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: "authelia"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
+
+  authelia-redis:
+    image: redis:7
+    restart: unless-stopped
+    expose:
+      - 6379
+    container_name: authelia-redis-container
+    command: "redis-server --save 60 1 --loglevel warning --requirepass ${REDIS_PASSWORD}"
+    volumes:
+      - ./redis:/data
+
+volumes:
+  configuration.yml:
+  users_database.yml:
+  db:
+  redis:

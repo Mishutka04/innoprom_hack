@@ -1,252 +1,310 @@
 <template>
-    <div class="form-container">
-      <div class="form-wrapper">
-        <div class="form-header">
-          <div class="logo">
-            <img src="" alt="Logo" class="logo-image" />
-          </div>
+  <div class="evaluation-page">
+    <!-- Header -->
+    <Header />
+
+    <!-- User Info Section -->
+    <section class="user-info" v-if="user">
+      <div class="user-card">
+        <h2>Ваш профиль</h2>
+        <div class="profile-details">
+          <p><strong>ФИО:</strong> {{ user.full_name }}</p>
+          <p><strong>Департамент:</strong> {{ user.department }}</p>
+          <p><strong>Направление:</strong> {{ user.position }}</p>
         </div>
-        
-        <form @submit.prevent="submitForm" class="dynamic-form">
-          <div v-for="(field, index) in formFields" :key="index" class="form-group">
-            <label :for="field.name" class="form-label">{{ field.name }}</label>
-            
-            <input
-              v-if="field.type === 'text' || field.type === 'email'"
-              v-model="formData[field.name]"
-              :id="field.name"
-              :type="field.type"
-              class="form-input"
-              :placeholder="field.placeholder || ''"
-            />
-            
-            <textarea
-              v-else-if="field.type === 'textarea'"
-              v-model="formData[field.name]"
-              :id="field.name"
-              class="form-textarea"
-              :placeholder="field.placeholder || ''"
-            ></textarea>
-            
-            <select
-              v-else-if="field.type === 'select'"
-              v-model="formData[field.name]"
-              :id="field.name"
-              class="form-select"
-            >
-              <option value="" disabled selected>Выберите значение</option>
-              <option v-for="option in field.options" :key="option.value" :value="option.value">
-                {{ option.label }}
-              </option>
-            </select>
-  
-            <div v-else-if="field.type === 'checkbox'" class="form-checkbox-group">
-              <input
-                type="checkbox"
-                v-model="formData[field.name]"
-                :id="field.name"
-                class="form-checkbox"
-              />
-              <label :for="field.name" class="form-checkbox-label">{{ field.label || field.name }}</label>
-            </div>
-          </div>
-  
-          <div class="form-footer">
-            <button type="submit" class="btn btn-submit">Отправить</button>
-          </div>
-        </form>
-  
-        <div v-if="responseMessage" class="response-message" :class="{ error: isError }">
-          {{ responseMessage }}
+      </div>
+    </section>
+
+    <!-- Evaluation Form -->
+    <section class="evaluation-form">
+      <h2>Оставить отзыв</h2>
+
+      <!-- Employee Selection -->
+      <div class="form-group">
+        <label for="employee">Выберите сотрудника:</label>
+        <select v-model="selectedEmployee" id="employee" class="form-select">
+          <option value="">Выберите сотрудника</option>
+          <option v-for="emp in employees" :key="emp.id" :value="emp.id">
+            {{ emp.name }}
+          </option>
+        </select>
+      </div>
+
+      <!-- Feedback Text -->
+      <div class="form-group" v-if="selectedEmployee">
+        <label for="feedback">Ваш отзыв:</label>
+        <textarea v-model="feedback" id="feedback" rows="4" placeholder="Напишите ваш отзыв здесь..."
+          class="form-textarea"></textarea>
+      </div>
+
+      <!-- Submit Button -->
+      <button @click="submitFeedback" :disabled="!canSubmit" class="submit-button">
+        Отправить отзыв
+      </button>
+    </section>
+
+    <!-- Modal -->
+    <div class="modal" v-if="showModal">
+      <div class="modal-content">
+        <h3>Отзыв отправлен</h3>
+        <p>Спасибо за ваш отзыв!</p>
+        <div class="modal-buttons">
+          <button @click="continueFeedback" class="continue-button">
+            Продолжить оценивание
+          </button>
+          <button @click="closeModal" class="close-button">
+            Закрыть
+          </button>
         </div>
       </div>
     </div>
-  </template>
-  
-  <script setup>
-  import { ref, onMounted } from 'vue'
-  import axios from 'axios'
-  
-  const formFields = ref([])
-  const formData = ref({})
-  const responseMessage = ref('')
-  const isError = ref(false)
-  
-  const fetchForm = async () => {
-    try {
-      const response = await axios.get('http://127.0.0.1:8000/api/form/3/')
-      const fields = response.data.schema.fields
-      formFields.value = fields
-      formData.value = fields.reduce((acc, field) => {
-        acc[field.name] = field.type === 'checkbox' ? false : ''
-        return acc
-      }, {})
-    } catch (error) {
-      console.error('Ошибка при загрузке формы:', error)
-      responseMessage.value = 'Ошибка при загрузке формы'
-      isError.value = true
+  </div>
+</template>
+
+<script setup>
+import { ref, computed, onMounted } from 'vue'
+import Header from './Header.vue';
+
+import { useRoute } from 'vue-router';
+import axios from 'axios';
+const route = useRoute();
+const userId = route.params.id; // Получаем ID из URL
+const user = ref();
+import { getCurrentInstance } from 'vue';
+
+// Accessing the global variable
+const instance = getCurrentInstance();
+const myGlobalVariable = instance.appContext.config.globalProperties.$globalUrl;
+const fetchUserAndEmployees = async () => {
+  try {
+    const response = await axios.get(myGlobalVariable + '/user/' + userId + "/");
+    if (response.data && response.data.length) {
+      user.value = response.data[0]
+      console.log(response.data[0])
     }
+
+    // Преобразуем данные для соответствия структуре employees
+    // employees.value = response.data.map(user => ({
+    //     id: user.id,
+    //     name: user.full_name,
+    //     position: user.position || 'Не указана',
+    //     rating: 5, // Замените на реальный рейтинг, если доступен
+    //     avatar: user.photo || '../assets/user.png',
+    //     description: 'Описание сотрудника отсутствует.', // Замените на реальное описание, если доступно
+    //     reviewers: Array(8).fill('../assets/user.png') // Замените на реальные аватары, если доступны
+    // }));
+
+  } catch (error) {
+    console.error('Ошибка при получении сотрудников:', error);
   }
-  
-  const submitForm = async () => {
-    try {
-      await axios.post('http://localhost:8000/api/dynamicforms/', formData.value)
-      responseMessage.value = 'Данные успешно отправлены!'
-      isError.value = false
-    } catch (error) {
-      responseMessage.value = 'Ошибка при отправке данных.'
-      isError.value = true
-    }
+};
+
+onMounted(fetchUserAndEmployees);
+// Mock data
+const currentUser = {
+  name: 'Иванов Петр Сергеевич',
+  department: 'IT-отдел',
+  role: 'Frontend Developer'
+}
+
+const employees = [
+  { id: 1, name: 'Петров Иван Васильевич' },
+  { id: 2, name: 'Сидорова Анна Михайловна' },
+  { id: 3, name: 'Козлов Дмитрий Александрович' }
+]
+
+// Reactive state
+const selectedEmployee = ref('')
+const feedback = ref('')
+const showModal = ref(false)
+
+// Computed
+const canSubmit = computed(() => {
+  return selectedEmployee.value && feedback.value.trim().length > 0
+})
+
+// Methods
+const submitFeedback = () => {
+  if (canSubmit.value) {
+    // Here you would typically make an API call
+    console.log('Feedback submitted:', {
+      employeeId: selectedEmployee.value,
+      feedback: feedback.value
+    })
+    showModal.value = true
   }
-  
-  onMounted(() => {
-    fetchForm()
-  })
-  </script>
-  
-  <style scoped>
-  .form-container {
-    min-height: 100vh;
-    background-color: #2196f3;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cpath fill='%23ffffff' fill-opacity='0.1' d='M10 0l2.5 5 5-2.5-2.5 5 5 2.5-5 2.5 2.5 5-5-2.5-2.5 5-2.5-5-5 2.5 2.5-5-5-2.5 5-2.5-2.5-5 5 2.5z'/%3E%3C/svg%3E");
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 1rem;
+}
+
+const continueFeedback = () => {
+  selectedEmployee.value = ''
+  feedback.value = ''
+  showModal.value = false
+}
+
+const closeModal = () => {
+  showModal.value = false
+  selectedEmployee.value = ''
+  feedback.value = ''
+}
+</script>
+
+<style scoped>
+.evaluation-page {
+  max-width: 100%;
+  min-height: 100vh;
+  background-color: #edeef0;
+}
+
+.header {
+  background-color: #2787f5;
+  padding: 12px 16px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header-content {
+  max-width: 600px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.header h1 {
+  color: white;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.logo {
+  width: 24px;
+  height: 24px;
+}
+
+.user-info,
+.evaluation-form {
+  max-width: 600px;
+  margin: 16px auto;
+  padding: 16px;
+}
+
+.user-card,
+.evaluation-form {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+.profile-details {
+  margin-top: 16px;
+  line-height: 1.5;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #2c2d2e;
+}
+
+.form-select,
+.form-textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #dce1e6;
+  border-radius: 8px;
+  font-size: 15px;
+}
+
+.form-select:focus,
+.form-textarea:focus {
+  border-color: #2787f5;
+  outline: none;
+}
+
+.submit-button {
+  background-color: #2787f5;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  width: 100%;
+}
+
+.submit-button:disabled {
+  background-color: #99a2ad;
+  cursor: not-allowed;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  padding: 24px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.modal-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.continue-button,
+.close-button {
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.continue-button {
+  background-color: #2787f5;
+  color: white;
+}
+
+.close-button {
+  background-color: #f2f3f5;
+  color: #2c2d2e;
+}
+
+/* Responsive Design */
+@media (max-width: 640px) {
+
+  .user-info,
+  .evaluation-form {
+    margin: 12px;
+    padding: 12px;
   }
-  
-  .form-wrapper {
-    background: white;
-    border-radius: 1rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 500px;
-    padding: 2rem;
+
+  .modal-content {
+    margin: 20px;
   }
-  
-  .form-header {
-    text-align: center;
-    margin-bottom: 2rem;
-  }
-  
-  .logo-image {
-    width: 40px;
-    height: 40px;
-  }
-  
-  .dynamic-form {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-  
-  .form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-  
-  .form-label {
-    font-size: 0.875rem;
-    font-weight: 500;
-    color: #374151;
-  }
-  
-  .form-input,
-  .form-textarea,
-  .form-select {
-    width: 100%;
-    padding: 0.75rem;
-    border: 1px solid #e5e7eb;
-    border-radius: 0.5rem;
-    font-size: 1rem;
-    transition: border-color 0.2s;
-  }
-  
-  .form-input:focus,
-  .form-textarea:focus,
-  .form-select:focus {
-    outline: none;
-    border-color: #2196f3;
-    box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
-  }
-  
-  .form-textarea {
-    min-height: 100px;
-    resize: vertical;
-  }
-  
-  .form-footer {
-    margin-top: 1.5rem;
-  }
-  
-  .btn-submit {
-    width: 100%;
-    background-color: #2196f3;
-    color: white;
-    padding: 0.75rem 1.5rem;
-    border-radius: 0.5rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background-color 0.2s;
-  }
-  
-  .btn-submit:hover {
-    background-color: #1e88e5;
-  }
-  
-  .response-message {
-    margin-top: 1rem;
-    padding: 0.75rem;
-    border-radius: 0.5rem;
-    text-align: center;
-    background-color: #4caf50;
-    color: white;
-  }
-  
-  .response-message.error {
-    background-color: #ef4444;
-  }
-  
-  .form-checkbox-group {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-  
-  .form-checkbox {
-    appearance: none;
-    width: 1.25rem;
-    height: 1.25rem;
-    border: 2px solid #e5e7eb;
-    border-radius: 0.25rem;
-    background-color: white;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  
-  .form-checkbox:checked {
-    background-color: #2196f3;
-    border-color: #2196f3;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%23ffffff'%3E%3Cpath fill-rule='evenodd' d='M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z' clip-rule='evenodd' /%3E%3C/svg%3E");
-    background-size: 80%;
-    background-position: center;
-    background-repeat: no-repeat;
-  }
-  
-  .form-checkbox-label {
-    font-size: 0.875rem;
-    color: #374151;
-    cursor: pointer;
-  }
-  
-  @media (max-width: 640px) {
-    .form-wrapper {
-      padding: 1rem;
-    }
-  
-    .btn-submit {
-      width: 100%;
-    }
-  }
-  </style>
+}
+</style>

@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, computed_field
 
 
 class CalculatedCriteria(BaseModel):
@@ -11,6 +11,7 @@ class CalculatedUserReview(BaseModel):
     criterias: list[CalculatedCriteria]
     summary: str
 
+    @computed_field
     @property
     def average(self) -> float:
         if not self.criterias:

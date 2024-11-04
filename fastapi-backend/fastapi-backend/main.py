@@ -1,13 +1,6 @@
 from fastapi import FastAPI
-from pydantic import BaseModel
 
-from services.ai_service import (
-    prepare_criterias_prompt,
-    get_ai_criterias,
-    prepare_summary_prompt,
-    get_ai_summary,
-)
-from services.models import QuestionWithAnswersAggregate
+from models.models import QuestionWithAnswersAggregate
 from services.reviews_service import calculate_reviews_from_answers
 
 app = FastAPI()

@@ -6,11 +6,13 @@ from services.ai_service import (
     prepare_summary_prompt,
     get_ai_summary,
 )
-from services.models import (
+from models.models import (
     CalculatedUserReviews,
     QuestionWithAnswersAggregate,
     CalculatedUserReview,
 )
+from services.reviews_repository import load_reviews_for_user
+from services.users_repository import load_users
 
 _criteria_names = ["Hard skills", "Коммуникация", "Лидерские навыки"]
 
@@ -45,4 +47,12 @@ class UserWithRating(BaseModel):
 
 
 def get_users_with_rating() -> list[UserWithRating]:
-    pass
+    users = load_users()
+    reviews = [load_reviews_for_user(user.id) for user in users]
+
+    return [
+        UserWithRating(
+            rating=review.review.average if review else 0.0, **user.model_dump()
+        )
+        for user, review in zip(users, reviews)
+    ]

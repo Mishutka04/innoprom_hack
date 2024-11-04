@@ -1,4 +1,4 @@
-from services.models import Answer, QuestionWithAnswersAggregate
+from models.models import Answer, QuestionWithAnswersAggregate
 
 
 def save_answers(answers: list[Answer]) -> None:

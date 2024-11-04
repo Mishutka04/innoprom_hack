@@ -3,7 +3,7 @@ import json
 import requests
 from pydantic import BaseModel
 
-from services.models import QuestionWithAnswersAggregate, CalculatedCriteria
+from models.models import QuestionWithAnswersAggregate, CalculatedCriteria
 
 
 def prepare_criterias_prompt(

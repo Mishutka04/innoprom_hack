@@ -21,7 +21,7 @@
 
                     <select class="dropdown" v-model="selectedDepartment">
                         <option value="">Департамент</option>
-                        <option value="it">IT</option>
+                        <option value="it">Инноваций</option>
                     </select>
                 </div>
 
@@ -47,7 +47,7 @@
                         <h3>{{ employee.name }}</h3>
                         <p>{{ employee.position }}</p>
                     </div>
-                    <div class="rating">{{ employee.rating }}</div>
+
                     <div class="arrow-right"></div>
                 </div>
             </div>

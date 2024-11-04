@@ -8,7 +8,7 @@ import { defineProps } from 'vue'
 import { useRouter } from "vue-router";
 const router = useRouter();
 function cd() {
-    router.push('/profile/' + props.id)
+    router.push('/profile/' + props.data_id)
 }
 const props = defineProps({
     data_id: {
@@ -16,7 +16,7 @@ const props = defineProps({
         required: true
     },
 });
-console.log(props)
+console.log(props.data_id)
 </script>
 <style>
 .btn-primary {

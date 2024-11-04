@@ -82,11 +82,6 @@
                                     его, чтобы получить данные!</b> </p>
                         </div>
                     </template>
-
-                    <div class="download-buttons" v-if="skills && Object.keys(skills).length > 0">
-                        <ButtonCSV />
-                        <ButtonPdf :block=""/>
-                    </div>
                 </div>
                 <template v-else>
                     <div v-for="(item, index) in skills" v-if="skills && Object.keys(skills).length > 0">

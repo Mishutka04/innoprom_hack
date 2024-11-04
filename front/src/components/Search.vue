@@ -199,7 +199,7 @@ async function fetchSkills() {
 const fetchEmployees = async () => {
   try {
     const response = await axios.get(myGlobalVariable + '/users/');
-    console.log(response.data)
+
     employees.value = response.data.map(user => ({
       id: user.id,
       name: user.full_name,
@@ -218,8 +218,6 @@ const fetchEmployees = async () => {
 const fetchEmployeesCard = async (id) => {
   try {
     const response = await axios.get(myGlobalVariable + '/user/card/' + id + "/");
-    console.log(response.data);
-
     const user = response.data.user_profile;
 
     selectedEmployee.value = {
@@ -246,7 +244,6 @@ const fetchEmployeesCard = async (id) => {
 
 const selectEmployee = async (employee) => {
   fetchEmployeesCard(employee.id);
-  console.log(selectedEmployee)
 }
 
 const filteredEmployees = computed(() => {

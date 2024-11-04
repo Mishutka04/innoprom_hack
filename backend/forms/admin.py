@@ -6,4 +6,7 @@ admin.site.register(StatusMethodology)
 admin.site.register(FormAnswer)
 admin.site.register(ResultMethodology)
 admin.site.register(UserCard)
+admin.site.register(NeedAnswer)
+
+
 # Register your models here.

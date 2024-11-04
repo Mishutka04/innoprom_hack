@@ -16,12 +16,15 @@
                 <div class="dropdown-container">
                     <select class="dropdown" v-model="selectedPosition">
                         <option value="">Должность</option>
-                        <option value="backend">Backend Developer</option>
+                        <option value="Backend">Backend Developer</option>
+                        <option value="Front-End">Front-end Developer</option>
+                        <option value="Full-Stack">Full-Stack Developer</option>
+                        <option value="Team-Lead">Team-Lead</option>
                     </select>
 
                     <select class="dropdown" v-model="selectedDepartment">
                         <option value="">Департамент</option>
-                        <option value="it">IT</option>
+                        <option value="it">Инноваций</option>
                     </select>
                 </div>
 
@@ -47,7 +50,7 @@
                         <h3>{{ employee.name }}</h3>
                         <p>{{ employee.position }}</p>
                     </div>
-                    <div class="rating">{{ employee.rating }}</div>
+
                     <div class="arrow-right"></div>
                 </div>
             </div>

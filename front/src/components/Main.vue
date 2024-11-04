@@ -73,7 +73,6 @@ const fetchEmployees = async () => {
         const response = await axios.get(myGlobalVariable + '/users/');
         const response_metric = await axios.get(myGlobalVariable + '/methodology/');
         metric_list.value = response_metric.data
-        console.log(response_metric, "111111111")
         // Преобразуем данные для соответствия структуре employees
         employees.value = response.data.map(user => ({
             id: user.id,
@@ -93,7 +92,6 @@ const fetchEmployees = async () => {
 const fetchEmployeesCard = async (id) => {
     try {
         const response = await axios.get(myGlobalVariable + '/user/card/' + id + "/");
-        console.log(response.data)
 
         // Преобразуем данные для соответствия структуре employees
         const user = response.data.user_profile; // Извлекаем объект user_profile
@@ -117,7 +115,7 @@ const fetchEmployeesCard = async (id) => {
     fetchSkills().then(fetchedSkills => {
         skills.value = fetchedSkills;
     });
-    console.log("ASAASA", methodologies.value)
+
 };
 
 const employees = ref([])
@@ -252,6 +250,7 @@ onMounted(fetchEmployees);
     border-radius: 8px;
     background-color: #f2f3f5;
     font-size: 14px;
+    width: 100%;
   }
   
   .gender-filter {
@@ -575,8 +574,8 @@ onMounted(fetchEmployees);
   }
   
   .placeholder-icon img {
-    width: 64px;
-    height: 64px;
+    width: 128px;
+    height: 168px;
     margin-bottom: 16px;
   }
   

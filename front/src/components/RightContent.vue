@@ -33,7 +33,7 @@
                                 </div>
 
                                 <div class="bnt-user">
-                                    <ButtonUser />
+                                    <ButtonUser :data_id="selectedEmployee.id"/>
                                 </div>
                             </div>
                         </div>
@@ -76,17 +76,12 @@
                     <template v-else>
                         <div class="placeholder-state">
                             <div class="placeholder-icon">
-                                <img src="../assets/image.png" alt="Placeholder bear">
+                                <img src="../assets/error.png" alt="Placeholder bear">
                             </div>
                             <p class="placeholder-text">У данного пользователя нету оценок компетенций. <b>Запустите
                                     его, чтобы получить данные!</b> </p>
                         </div>
                     </template>
-
-                    <div class="download-buttons" v-if="skills && Object.keys(skills).length > 0">
-                        <ButtonCSV />
-                        <ButtonPdf />
-                    </div>
                 </div>
                 <template v-else>
                     <div v-for="(item, index) in skills" v-if="skills && Object.keys(skills).length > 0">
@@ -95,7 +90,7 @@
                     <template v-else>
                         <div class="placeholder-state">
                             <div class="placeholder-icon">
-                                <img src="../assets/image.png" alt="Placeholder bear">
+                                <img src="../assets/error.png" alt="Placeholder bear">
                             </div>
                             <p class="placeholder-text">У данного пользователя нету данных по его компетенциям.
                                 <b>Запустите процесс анализа, чтобы получить метрики компетенций!</b> </p>
@@ -107,7 +102,7 @@
             <template v-else>
                 <div class="placeholder-state">
                     <div class="placeholder-icon">
-                        <img src="../assets/image.png" alt="Placeholder bear">
+                        <img src="../assets/error.png" alt="Placeholder bear">
                     </div>
                     <p class="placeholder-text">Сотрудник еще не выбран</p>
                 </div>
